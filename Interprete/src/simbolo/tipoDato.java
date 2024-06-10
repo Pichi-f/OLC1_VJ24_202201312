@@ -13,6 +13,6 @@ public enum tipoDato {
     DECIMAL,
     BOOlEANO,
     CARACTER,
-    CADENAS,
+    CADENA,
     VOID
 }
