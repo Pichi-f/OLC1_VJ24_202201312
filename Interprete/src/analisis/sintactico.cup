@@ -12,6 +12,8 @@ import instrucciones.Print;
 
 // Expresiones
 import expresiones.Nativo;
+import expresiones.Aritmeticas;
+import expresiones.OperadoresAritmeticos;
 
 // Parser
 parser code
@@ -40,12 +42,16 @@ action code
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL;
 terminal FINCADENA, IMPRIMIR;
-terminal PAR1, PAR2;
+terminal PAR1, PAR2, MAS, MENOS, UMENOS;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion EXPRESION;
+
+precedence left MENOS;
+precedence left MAS;
+precedence left UMENOS;
 
 start with INICIO;
 
@@ -59,7 +65,10 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {:  RESULT = a; RESULT.add(b
 INSTRUCCION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Print(a, aleft, aright);  :}
 ;
 
-EXPRESION ::= ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
+EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
+            | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
+            | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
+            | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
 ;

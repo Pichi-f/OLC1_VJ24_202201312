@@ -58,6 +58,8 @@ public class Aritmeticas extends Instruccion {
                 this.suma(opIzq, opDer);
             case NEGACION ->
                 this.negacion(Unico);
+            case RESTA ->
+                this.resta(opIzq, opDer);
             default ->
                 new Errores("SEMANTICO", "Operador invalido", this.linea, this.col);
         };
@@ -78,6 +80,14 @@ public class Aritmeticas extends Instruccion {
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (int) op1 + (double) op2;
                     }
+                    case tipoDato.BOOlEANO -> {
+                        this.tipo.setTipo(tipoDato.BOOlEANO);
+                        return new Errores("SEMANTICO", "No se puede suma un entero con un booleano", this.linea, this.col);
+                    }
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return (int) op1 + (int) ((char) op2);
+                    }
                     case tipoDato.CADENA -> {
                         this.tipo.setTipo(tipoDato.CADENA);
                         return op1.toString() + op2.toString();
@@ -91,15 +101,77 @@ public class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO -> {
                         this.tipo.setTipo(tipoDato.DECIMAL);
-                        return (double) op1 + (int) op1;
+                        return (double) op1 + (int) op2;
                     }
                     case tipoDato.DECIMAL -> {
                         this.tipo.setTipo(tipoDato.DECIMAL);
-                        return (double) op1 + (double) op1;
+                        return (double) op1 + (double) op2;
                     }
                     case tipoDato.CADENA -> {
                         this.tipo.setTipo(tipoDato.CADENA);
-                        return op1.toString() + op1.toString();
+                        return op1.toString() + op2.toString();
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.BOOlEANO -> {
+                switch (tipo2) {
+                    case tipoDato.CADENA -> {
+                        this.tipo.setTipo(tipoDato.CADENA);
+                        return op1.toString() + op2.toString();
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.CADENA ->{
+                this.tipo.setTipo(tipoDato.CADENA);
+                return op1.toString() + op2.toString();
+            }
+            default ->{
+                return new Errores("SEMANTICO", "AFUERA", this.linea, this.col);
+            }
+        }
+    }
+    
+    public Object resta(Object op1, Object op2) {
+        var tipo1 = this.operando1.tipo.getTipo();
+        var tipo2 = this.operando2.tipo.getTipo();
+
+        switch (tipo1) {
+            case tipoDato.ENTERO -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return (int) op1 - (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (int) op1 - (double) op2;
+                    }
+                    /*
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.CARACTER);
+                        return (int) op1 + (int) ((char) op2);
+                    }
+                    */
+                    default -> {
+                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.DECIMAL -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (double) op1 - (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (double) op1 - (double) op2;
                     }
                     default -> {
                         return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
@@ -121,7 +193,7 @@ public class Aritmeticas extends Instruccion {
             }
             case tipoDato.DECIMAL -> {
                 this.tipo.setTipo(tipoDato.DECIMAL);
-                return (int) op1 * -1;
+                return (double) op1 * -1;
             }
             default -> {
                 return new Errores("SEMANTICO", "Negacion errores", this.linea, this.col);

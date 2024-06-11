@@ -85,8 +85,10 @@ public class Interprete {
 
         frame.setVisible(true);
         try {
-            String texto = "imprimir(\"Mi cadena 33\");"
-                    + "imprimir(2); imprimir(3.33);";
+            String texto = "imprimir(1.2+\" Mi cadena \" );"
+                    + "imprimir(2+2-1+5); imprimir(-1.33+3.33);"
+                    + "imprimir(2+\"cadena\");"
+                    + "imprimir(-2-1);";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);
             var resultado = p.parse();
