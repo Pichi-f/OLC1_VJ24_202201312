@@ -31,7 +31,6 @@ PAR1 = "("
 PAR2 = ")"
 MAS = "+"
 MENOS = "-"
-IGUAL = "="
 FINCADENA = ";"
 BLANCOS = [\ \t\n\r\f]+
 ENTERO = [0-9]+
@@ -58,6 +57,5 @@ IMPRIMIR = "println"
 
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext()); }
-<YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }

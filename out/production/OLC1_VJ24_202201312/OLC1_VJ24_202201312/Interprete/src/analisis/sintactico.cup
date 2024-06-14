@@ -14,8 +14,6 @@ import instrucciones.Print;
 import expresiones.Nativo;
 import expresiones.Aritmeticas;
 import expresiones.OperadoresAritmeticos;
-import expresiones.Relacionales;
-import expresiones.OperadoresRelacionales;
 
 // Parser
 parser code
@@ -45,14 +43,12 @@ action code
 terminal String CADENA, ENTERO, DECIMAL;
 terminal FINCADENA, IMPRIMIR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS;
-terminal IGUAL, EQUALS; 
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion EXPRESION;
 
-precedence left EQUALS;
 precedence left MAS;
 precedence left MENOS;
 precedence left UMENOS;
@@ -73,7 +69,6 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
             | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
             | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
-            | EXPRESION:a IGUAL IGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);  :}%prec EQUALS
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}

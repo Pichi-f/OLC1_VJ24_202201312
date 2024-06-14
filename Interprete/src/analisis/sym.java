@@ -18,7 +18,9 @@ public class sym {
   public static final int PAR2 = 8;
   public static final int PAR1 = 7;
   public static final int FINCADENA = 5;
+  public static final int IGUAL = 12;
   public static final int error = 1;
+  public static final int EQUALS = 13;
   public static final int IMPRIMIR = 6;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -32,7 +34,9 @@ public class sym {
   "PAR2",
   "MAS",
   "MENOS",
-  "UMENOS"
+  "UMENOS",
+  "IGUAL",
+  "EQUALS"
   };
 }
 
