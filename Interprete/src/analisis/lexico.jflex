@@ -32,6 +32,7 @@ import excepciones.Errores;
 // Simbolos del sistema
 PAR1 = "("
 PAR2 = ")"
+MODULO = "%"
 POTENCIA = "**"
 DIVISION = "/"
 MULTIPLICACION = "*"
@@ -84,6 +85,7 @@ VAR = "var"
 <YYINITIAL> {PAR1} { return new Symbol(sym.PAR1, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PAR2} { return new Symbol(sym.PAR2, yyline, yycolumn, yytext()); }
 
+<YYINITIAL> {MODULO} { return new Symbol(sym.MODULO, yyline, yycolumn, yytext()); }
 <YYINITIAL> {POTENCIA} { return new Symbol(sym.POTENCIA, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DIVISION} { return new Symbol(sym.DIVISION, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MULTIPLICACION} { return new Symbol(sym.MULTIPLICACION, yyline, yycolumn, yytext()); }

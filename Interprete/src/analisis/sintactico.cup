@@ -47,7 +47,7 @@ action code
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal String FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
-terminal String PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, DOSPUNTOS;
+terminal String PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MODULO, DOSPUNTOS;
 terminal String IGUAL, EQUALS; 
 terminal String CONST, VAR;
 
@@ -66,6 +66,7 @@ precedence left UMENOS;
 precedence left MULTIPLICACION;
 precedence left DIVISION;
 precedence nonassoc POTENCIA;
+precedence left MODULO;
 
 start with INICIO;
 
@@ -102,6 +103,7 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
             | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
+            | EXPRESION:a MODULO EXPRESION:b    {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);  :}
             | EXPRESION:a POTENCIA EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);  :}
             | EXPRESION:a DIVISION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);  :}
             | EXPRESION:a MULTIPLICACION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);  :}
