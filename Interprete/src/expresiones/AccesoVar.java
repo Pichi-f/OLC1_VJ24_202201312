@@ -6,10 +6,7 @@ package expresiones;
 
 import abstracto.Instruccion;
 import excepciones.Errores;
-import simbolo.Arbol;
-import simbolo.Tipo;
-import simbolo.tablaSimbolos;
-import simbolo.tipoDato;
+import simbolo.*;
 
 /**
  *

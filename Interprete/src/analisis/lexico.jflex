@@ -41,6 +41,9 @@ MENOS = "-"
 IGUAL = "="
 FINCADENA = ";"
 DOSPUNTOS = ":"
+LLAVE1 = "{"
+LLAVE2 = "}"
+MENOR = "<"
 BLANCOS = [\ \t\n\r\f]+
 ENTERO = [0-9]+
 DECIMAL = [0-9]+"."[0-9]+
@@ -55,6 +58,12 @@ DOUBLE = "double"
 STRING = "string"
 CONST = "const"
 VAR = "var"
+IF = "if"
+TRUE = "true"
+FALSE = "false"
+BOOL = "bool"
+FOR = "for"
+BREAK = "break"
 
 
 %%
@@ -62,7 +71,12 @@ VAR = "var"
 <YYINITIAL> {INT} { return new Symbol(sym.INT, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOUBLE} { return new Symbol(sym.DOUBLE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {STRING} { return new Symbol(sym.STRING, yyline, yycolumn, yytext()); }
-
+<YYINITIAL> {TRUE} {return new Symbol(sym.TRUE, yyline, yycolumn,yytext());}
+<YYINITIAL> {FALSE} {return new Symbol(sym.FALSE, yyline, yycolumn,yytext());}
+<YYINITIAL> {IF} {return new Symbol(sym.IF, yyline, yycolumn,yytext());}
+<YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
+<YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
+<YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
@@ -84,6 +98,8 @@ VAR = "var"
 <YYINITIAL> {FINCADENA} { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PAR1} { return new Symbol(sym.PAR1, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PAR2} { return new Symbol(sym.PAR2, yyline, yycolumn, yytext()); }
+<YYINITIAL> {LLAVE1} {return new Symbol(sym.LLAVE1, yyline, yycolumn,yytext());}
+<YYINITIAL> {LLAVE2} {return new Symbol(sym.LLAVE2, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {MODULO} { return new Symbol(sym.MODULO, yyline, yycolumn, yytext()); }
 <YYINITIAL> {POTENCIA} { return new Symbol(sym.POTENCIA, yyline, yycolumn, yytext()); }

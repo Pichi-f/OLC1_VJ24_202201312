@@ -11,7 +11,7 @@ package simbolo;
 public enum tipoDato {
     ENTERO,
     DECIMAL,
-    BOOlEANO,
+    BOOLEANO,
     CARACTER,
     CADENA,
     VOID

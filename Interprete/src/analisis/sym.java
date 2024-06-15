@@ -9,6 +9,7 @@ package analisis;
 public class sym {
   /* terminals */
   public static final int MENOS = 15;
+  public static final int MENOR = 33;
   public static final int MULTIPLICACION = 17;
   public static final int DOSPUNTOS = 21;
   public static final int CADENA = 2;
@@ -19,6 +20,8 @@ public class sym {
   public static final int DIVISION = 18;
   public static final int POTENCIA = 19;
   public static final int IMPRIMIR = 8;
+  public static final int TRUE = 26;
+  public static final int IF = 28;
   public static final int MODULO = 20;
   public static final int UMENOS = 16;
   public static final int ID = 5;
@@ -26,11 +29,17 @@ public class sym {
   public static final int EQUALS = 23;
   public static final int STRING = 11;
   public static final int EOF = 0;
+  public static final int BREAK = 34;
+  public static final int FALSE = 27;
+  public static final int LLAVE2 = 31;
   public static final int CONST = 24;
   public static final int error = 1;
   public static final int PAR2 = 13;
+  public static final int LLAVE1 = 30;
   public static final int PAR1 = 12;
+  public static final int BOOL = 29;
   public static final int ENTERO = 3;
+  public static final int FOR = 32;
   public static final int VAR = 25;
   public static final int MAS = 14;
   public static final int DOUBLE = 10;
@@ -60,7 +69,16 @@ public class sym {
   "IGUAL",
   "EQUALS",
   "CONST",
-  "VAR"
+  "VAR",
+  "TRUE",
+  "FALSE",
+  "IF",
+  "BOOL",
+  "LLAVE1",
+  "LLAVE2",
+  "FOR",
+  "MENOR",
+  "BREAK"
   };
 }
 

@@ -5,29 +5,21 @@
 package instrucciones;
 
 import abstracto.Instruccion;
-import excepciones.Errores;
+import simbolo.Arbol;
 import simbolo.*;
-
+import simbolo.tablaSimbolos;
 /**
  *
  * @author pichi
  */
-public class Print extends Instruccion {
+public class Break extends Instruccion {
 
-    private Instruccion expresion;
-
-    public Print(Instruccion expresion, int linea, int col) {
+    public Break(int linea, int col) {
         super(new Tipo(tipoDato.VOID), linea, col);
-        this.expresion = expresion;
     }
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        var resultado = this.expresion.interpretar(arbol, tabla);
-        if (resultado instanceof Errores) {
-            return resultado;
-        }
-        arbol.Print(resultado.toString());
         return null;
     }
 

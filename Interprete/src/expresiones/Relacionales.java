@@ -7,7 +7,6 @@ package expresiones;
 import abstracto.Instruccion;
 import excepciones.Errores;
 import simbolo.*;
-import simbolo.tipoDato;
 
 /**
  *
@@ -19,7 +18,7 @@ public class Relacionales extends Instruccion {
     private OperadoresRelacionales relacional;
 
     public Relacionales(Instruccion cond1, Instruccion cond2, OperadoresRelacionales relacional, int linea, int col) {
-        super(new Tipo(tipoDato.BOOlEANO), linea, col);
+        super(new Tipo(tipoDato.BOOLEANO), linea, col);
         this.cond1 = cond1;
         this.cond2 = cond2;
         this.relacional = relacional;
@@ -39,6 +38,7 @@ public class Relacionales extends Instruccion {
         
         return switch (relacional){
             case EQUALS -> this.equals(condIzq, condDer);
+            case MENOR -> this.menor(condIzq, condDer);
             default -> new Errores("SEMANTICO", "Relacional Invalido", this.linea, this.col);
         };
     }
@@ -77,6 +77,37 @@ public class Relacionales extends Instruccion {
                 };
                 default ->
                     new Errores("SEMANTICO", "Relacional Invalido", this.linea, this.col);
+        };
+    }
+
+    public Object menor(Object comp1, Object comp2) {
+        var comparando1 = this.cond1.tipo.getTipo();
+        var comparando2 = this.cond2.tipo.getTipo();
+
+        return switch (comparando1) {
+            case tipoDato.ENTERO ->
+                switch (comparando2) {
+                    case tipoDato.ENTERO ->
+                        (int) comp1 < (int) comp2;
+                    case tipoDato.DECIMAL ->
+                        (int) comp1 < (double) comp2;
+                    default ->
+                        new Errores("SEMANTICO", "Relacional invaldo",
+                        this.linea, this.col);
+                };
+            case tipoDato.DECIMAL ->
+                switch (comparando2) {
+                    case tipoDato.ENTERO ->
+                        (double) comp1 < (int) comp2;
+                    case tipoDato.DECIMAL ->
+                        (double) comp1 < (double) comp2;
+                    default ->
+                        new Errores("SEMANTICO", "Relacional invaldo",
+                        this.linea, this.col);
+                };
+            default ->
+                new Errores("SEMANTICO", "Relacional invaldo",
+                this.linea, this.col);
         };
     }
 }

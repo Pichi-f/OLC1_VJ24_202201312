@@ -89,7 +89,7 @@ public class Aritmeticas extends Instruccion {
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (int) op1 + (double) op2;
                     }
-                    case tipoDato.BOOlEANO -> {
+                    case tipoDato.BOOLEANO -> {
                         return new Errores("SEMANTICO", "No se puede sumar un entero con un booleano", this.linea, this.col);
                     }
                     case tipoDato.CARACTER -> {
@@ -115,11 +115,11 @@ public class Aritmeticas extends Instruccion {
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (double) op1 + (double) op2;
                     }
-                    case tipoDato.BOOlEANO -> {
+                    case tipoDato.BOOLEANO -> {
                         return new Errores("SEMANTICO", "No se puede sumar un decimal con un booleano", this.linea, this.col);
                     }
                     case tipoDato.CARACTER -> {
-                        this.tipo.setTipo(tipoDato.BOOlEANO);
+                        this.tipo.setTipo(tipoDato.BOOLEANO);
                         return (double) op1 + (double) ((String) op2).charAt(0);
                     }
                     case tipoDato.CADENA -> {
@@ -131,7 +131,7 @@ public class Aritmeticas extends Instruccion {
                     }
                 }
             }
-            case tipoDato.BOOlEANO -> {
+            case tipoDato.BOOLEANO -> {
                 switch (tipo2) {
                     case tipoDato.ENTERO -> {
                         return new Errores("SEMANTICO", "No se puede suma un boolenao con un entero", this.linea, this.col);
@@ -139,7 +139,7 @@ public class Aritmeticas extends Instruccion {
                     case tipoDato.DECIMAL -> {
                         return new Errores("SEMANTICO", "No se puede suma un boolenao con un decimal", this.linea, this.col);
                     }
-                    case tipoDato.BOOlEANO -> {
+                    case tipoDato.BOOLEANO -> {
                         return new Errores("SEMANTICO", "No se puede suma un booleano con un booleano", this.linea, this.col);
                     }
                     case tipoDato.CARACTER -> {
@@ -164,7 +164,7 @@ public class Aritmeticas extends Instruccion {
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (int) op1 + (double) op2;
                     }
-                    case tipoDato.BOOlEANO -> {
+                    case tipoDato.BOOLEANO -> {
                         return new Errores("SEMANTICO", "No se puede sumar un entero con un booleano", this.linea, this.col);
                     }
                     case tipoDato.CARACTER -> {
