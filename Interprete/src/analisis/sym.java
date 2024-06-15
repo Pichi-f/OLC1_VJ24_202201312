@@ -9,21 +9,24 @@ package analisis;
 public class sym {
   /* terminals */
   public static final int MENOS = 14;
+  public static final int DOSPUNTOS = 16;
   public static final int CADENA = 2;
-  public static final int IGUAL = 16;
+  public static final int IGUAL = 17;
   public static final int INT = 8;
   public static final int FINCADENA = 6;
   public static final int DECIMAL = 4;
   public static final int IMPRIMIR = 7;
   public static final int UMENOS = 15;
   public static final int ID = 5;
-  public static final int EQUALS = 17;
+  public static final int EQUALS = 18;
   public static final int STRING = 10;
   public static final int EOF = 0;
+  public static final int CONST = 19;
   public static final int error = 1;
   public static final int PAR2 = 12;
   public static final int PAR1 = 11;
   public static final int ENTERO = 3;
+  public static final int VAR = 20;
   public static final int MAS = 13;
   public static final int DOUBLE = 9;
   public static final String[] terminalNames = new String[] {
@@ -43,8 +46,11 @@ public class sym {
   "MAS",
   "MENOS",
   "UMENOS",
+  "DOSPUNTOS",
   "IGUAL",
-  "EQUALS"
+  "EQUALS",
+  "CONST",
+  "VAR"
   };
 }
 

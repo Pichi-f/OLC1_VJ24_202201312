@@ -8,9 +8,11 @@ import simbolo.Tipo;
 import simbolo.tipoDato;
 import excepciones.Errores;
 
+
 // Instrucciones
 import instrucciones.Print;
 import instrucciones.Declaracion;
+import instrucciones.AsignacionVar;
 
 // Expresiones
 import expresiones.Nativo;
@@ -44,16 +46,18 @@ action code
 
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL, ID;
-terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
-terminal PAR1, PAR2, MAS, MENOS, UMENOS;
-terminal IGUAL, EQUALS; 
+terminal String FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
+terminal String PAR1, PAR2, MAS, MENOS, UMENOS, DOSPUNTOS;
+terminal String IGUAL, EQUALS; 
+terminal String CONST, VAR;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION, DECLARACION;
+nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
+nonterminal String MUTABILIDAD;
 
 precedence left EQUALS;
 precedence left MAS;
@@ -71,13 +75,21 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {:  RESULT = a; RESULT.add(b
 
 INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | DECLARACION:a     {:  RESULT = a;  :}
+                | ASIGNACION:a      {:  RESULT = a;  :}
                 | error FINCADENA  
 ;
 
 IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Print(a, aleft, aright);  :}
 ;
 
-DECLARACION ::= TIPOS:a ID:b IGUAL EXPRESION:c FINCADENA    {:  RESULT = new Declaracion(b, c, a, aleft, aright);  :}
+DECLARACION ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA    {:  RESULT = new Declaracion(m, b, c, a, aleft, aright);  :}
+;
+
+MUTABILIDAD ::= CONST     {:  RESULT = "CONST";  :}
+                | VAR      {:  RESULT = "VAR";  :}
+;
+
+ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
 ;
 
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}

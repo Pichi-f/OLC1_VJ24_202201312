@@ -41,9 +41,14 @@ public class Interprete {
         // Crear las pestañas
         JTabbedPane tabbedPane = new JTabbedPane();
         try {
-            String texto = "String texto = \"Mi Variable\";"
-                    + "inT a = 10 + 10;"
-                    + "println(-a+20);";
+            String texto = "var num2 : int = 10;"
+                    + "const num1 : double = 10.0;"
+                    + "println(num2);"
+                    + "println(num1);"
+                    + "num2 = 5;"
+                    + "num1 = 20.5;"
+                    + "println(num2);"
+                    + "println(num1);";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);
             var resultado = p.parse();

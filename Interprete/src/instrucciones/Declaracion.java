@@ -18,10 +18,12 @@ import simbolo.tablaSimbolos;
 public class Declaracion extends Instruccion{
     public String identificador;
     public Instruccion valor;
+    public String mutabilidad;
 
     //aqui se veran los valores por defecto, tomarlo en cuenta
-    public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
+    public Declaracion(String mutabilidad, String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
         super(tipo, linea, col);
+        this.mutabilidad = mutabilidad;
         this.identificador = identificador;
         this.valor = valor;
     }
@@ -40,6 +42,10 @@ public class Declaracion extends Instruccion{
         }
         //Se crea el simbolo
         Simbolo s = new Simbolo(this.tipo, this.identificador, valorInterpretado);
+        if (mutabilidad.toLowerCase().equals("const")){
+            s.setMutabilidad(true);
+            System.out.println("Valor constante");
+        }
         
         boolean creacion = tabla.setVariable(s);
         if (!creacion){

@@ -36,6 +36,7 @@ MAS = "+"
 MENOS = "-"
 IGUAL = "="
 FINCADENA = ";"
+DOSPUNTOS = ":"
 BLANCOS = [\ \t\n\r\f]+
 ENTERO = [0-9]+
 DECIMAL = [0-9]+"."[0-9]+
@@ -47,6 +48,8 @@ IMPRIMIR = "println"
 INT = "int"
 DOUBLE = "double"
 STRING = "string"
+CONST = "const"
+VAR = "var"
 
 
 %%
@@ -57,6 +60,8 @@ STRING = "string"
 
 
 //PALABRAS RESERVADAS
+<YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
+<YYINITIAL> {VAR} { return new Symbol(sym.VAR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {ID} { return new Symbol(sym.ID, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext()); }
@@ -74,6 +79,7 @@ STRING = "string"
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DOSPUNTOS} { return new Symbol(sym.DOSPUNTOS, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }
 
