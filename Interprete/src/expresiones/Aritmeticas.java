@@ -82,8 +82,7 @@ public class Aritmeticas extends Instruccion {
                         return (int) op1 + (double) op2;
                     }
                     case tipoDato.BOOlEANO -> {
-                        this.tipo.setTipo(tipoDato.BOOlEANO);
-                        return new Errores("SEMANTICO", "No se puede suma un entero con un booleano", this.linea, this.col);
+                        return new Errores("SEMANTICO", "No se puede sumar un entero con un booleano", this.linea, this.col);
                     }
                     case tipoDato.CARACTER -> {
                         this.tipo.setTipo(tipoDato.ENTERO);
@@ -94,7 +93,7 @@ public class Aritmeticas extends Instruccion {
                         return op1.toString() + op2.toString();
                     }
                     default -> {
-                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                        return new Errores("SEMANTICO", "Suma erronea", this.linea, this.col);
                     }
                 }
             }
@@ -108,23 +107,68 @@ public class Aritmeticas extends Instruccion {
                         this.tipo.setTipo(tipoDato.DECIMAL);
                         return (double) op1 + (double) op2;
                     }
+                    case tipoDato.BOOlEANO -> {
+                        return new Errores("SEMANTICO", "No se puede sumar un decimal con un booleano", this.linea, this.col);
+                    }
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.BOOlEANO);
+                        return (double) op1 + (double) ((String) op2).charAt(0);
+                    }
                     case tipoDato.CADENA -> {
                         this.tipo.setTipo(tipoDato.CADENA);
                         return op1.toString() + op2.toString();
                     }
                     default -> {
-                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                        return new Errores("SEMANTICO", "Suma erronea", this.linea, this.col);
                     }
                 }
             }
             case tipoDato.BOOlEANO -> {
                 switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        return new Errores("SEMANTICO", "No se puede suma un boolenao con un entero", this.linea, this.col);
+                    }
+                    case tipoDato.DECIMAL -> {
+                        return new Errores("SEMANTICO", "No se puede suma un boolenao con un decimal", this.linea, this.col);
+                    }
+                    case tipoDato.BOOlEANO -> {
+                        return new Errores("SEMANTICO", "No se puede suma un booleano con un booleano", this.linea, this.col);
+                    }
+                    case tipoDato.CARACTER -> {
+                        return new Errores("SEMANTICO", "No se puede suma un booleano con un caracter", this.linea, this.col);
+                    }
                     case tipoDato.CADENA -> {
                         this.tipo.setTipo(tipoDato.CADENA);
                         return op1.toString() + op2.toString();
                     }
                     default -> {
-                        return new Errores("SEMANTICO", "Suma errorea", this.linea, this.col);
+                        return new Errores("SEMANTICO", "Suma erronea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.CARACTER -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return ((String) op1).charAt(0) + (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (int) op1 + (double) op2;
+                    }
+                    case tipoDato.BOOlEANO -> {
+                        return new Errores("SEMANTICO", "No se puede sumar un entero con un booleano", this.linea, this.col);
+                    }
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return (int) op1 + (int) ((String) op2).charAt(0);
+                    }
+                    case tipoDato.CADENA -> {
+                        this.tipo.setTipo(tipoDato.CADENA);
+                        return op1.toString() + op2.toString();
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Suma erronea", this.linea, this.col);
                     }
                 }
             }

@@ -42,13 +42,14 @@ public class Interprete {
         JTabbedPane tabbedPane = new JTabbedPane();
         try {
             String texto = "var num2 : int = 10;"
-                    + "const num1 : double = 10.0;"
+                    + "const num1 : double = 10.2;"
                     + "println(num2);"
                     + "println(num1);"
                     + "num2 = 5;"
                     + "num1 = 20.5;"
                     + "println(num2 + \'A\');"
-                    + "println(num1);";
+                    + "println(num1 + \'A\');"
+                    + "println(\"a\"+2.0);";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);
             var resultado = p.parse();
