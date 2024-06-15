@@ -49,7 +49,7 @@ public class Interprete {
                     + "num1 = 20.5;"
                     + "println(num2 + \'A\');"
                     + "println(num1 + \'A\');"
-                    + "println(\'a\'-\'a\');";
+                    + "println(\'a\'*\'a\');";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);
             var resultado = p.parse();

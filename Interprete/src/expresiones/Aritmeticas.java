@@ -60,6 +60,8 @@ public class Aritmeticas extends Instruccion {
                 this.negacion(Unico);
             case RESTA ->
                 this.resta(opIzq, opDer);
+            case MULTIPLICACION ->
+                this.multiplicacion(opIzq, opDer);
             default ->
                 new Errores("SEMANTICO", "Operador invalido", this.linea, this.col);
         };
@@ -240,6 +242,73 @@ public class Aritmeticas extends Instruccion {
                     }
                     default -> {
                         return new Errores("SEMANTICO", "Resta erronea", this.linea, this.col);
+                    }
+                }
+            }
+            default -> {
+                return new Errores("SEMANTICO", "AFUERA", this.linea, this.col);
+            }
+        }
+    }
+    
+    public Object multiplicacion(Object op1, Object op2) {
+        var tipo1 = this.operando1.tipo.getTipo();
+        var tipo2 = this.operando2.tipo.getTipo();
+
+        switch (tipo1) {
+            case tipoDato.ENTERO -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return (int) op1 * (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (int) op1 * (double) op2;
+                    }
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return (int) op1 * ((String) op2).charAt(0);
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Multiplicación errorea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.DECIMAL -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (double) op1 * (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (double) op1 * (double) op2;
+                    }
+                    case tipoDato.CARACTER -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return (double) op1 * ((String) op2).charAt(0);
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Multiplicación errorea", this.linea, this.col);
+                    }
+                }
+            }
+            case tipoDato.CARACTER -> {
+                switch (tipo2) {
+                    case tipoDato.ENTERO -> {
+                        this.tipo.setTipo(tipoDato.ENTERO);
+                        return ((String) op1).charAt(0) * (int) op2;
+                    }
+                    case tipoDato.DECIMAL -> {
+                        this.tipo.setTipo(tipoDato.DECIMAL);
+                        return ((String) op1).charAt(0) * (double) op2;
+                    }
+                    case tipoDato.CARACTER -> {
+                        return new Errores("SEMANTICO", "No se puede multiplicar un caracter entre otro caracter", this.linea, this.col);
+                    }
+                    default -> {
+                        return new Errores("SEMANTICO", "Multiplicación erronea", this.linea, this.col);
                     }
                 }
             }

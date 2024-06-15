@@ -32,6 +32,7 @@ import excepciones.Errores;
 // Simbolos del sistema
 PAR1 = "("
 PAR2 = ")"
+MULTIPLICACION = "*"
 MAS = "+"
 MENOS = "-"
 IGUAL = "="
@@ -81,6 +82,7 @@ VAR = "var"
 <YYINITIAL> {PAR1} { return new Symbol(sym.PAR1, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PAR2} { return new Symbol(sym.PAR2, yyline, yycolumn, yytext()); }
 
+<YYINITIAL> {MULTIPLICACION} { return new Symbol(sym.MULTIPLICACION, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }

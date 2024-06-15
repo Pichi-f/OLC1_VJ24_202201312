@@ -47,7 +47,7 @@ action code
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal String FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
-terminal String PAR1, PAR2, MAS, MENOS, UMENOS, DOSPUNTOS;
+terminal String PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DOSPUNTOS;
 terminal String IGUAL, EQUALS; 
 terminal String CONST, VAR;
 
@@ -63,6 +63,7 @@ precedence left EQUALS;
 precedence left MAS;
 precedence left MENOS;
 precedence left UMENOS;
+precedence left MULTIPLICACION;
 
 start with INICIO;
 
@@ -99,6 +100,7 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
             | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
+            | EXPRESION:a MULTIPLICACION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);  :}
             | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
             | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
             | EXPRESION:a IGUAL IGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);  :}%prec EQUALS
