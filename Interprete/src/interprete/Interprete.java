@@ -47,7 +47,7 @@ public class Interprete {
                     + "println(num1);"
                     + "num2 = 5;"
                     + "num1 = 20.5;"
-                    + "println(num2);"
+                    + "println(num2 + \'A\');"
                     + "println(num1);";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);

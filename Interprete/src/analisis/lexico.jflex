@@ -42,6 +42,7 @@ ENTERO = [0-9]+
 DECIMAL = [0-9]+"."[0-9]+
 ID = [a-zA-Z][a-zA-Z0-9_]*
 CADENA = [\"]([^\"])*[\"]
+CARACTER = \'[^\']\'
 
 // Palabras reservadas
 IMPRIMIR = "println"
@@ -71,6 +72,10 @@ VAR = "var"
     String cadena = yytext();
     cadena = cadena.substring(1, cadena.length()-1);
     return new Symbol(sym.CADENA, yyline, yycolumn, cadena); }
+<YYINITIAL> {CARACTER} {
+    String caracter = yytext();
+    caracter = caracter.substring(1, caracter.length()-1);
+    return new Symbol(sym.CARACTER, yyline, yycolumn, caracter); }
 
 <YYINITIAL> {FINCADENA} { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PAR1} { return new Symbol(sym.PAR1, yyline, yycolumn, yytext()); }

@@ -45,7 +45,7 @@ action code
 :}
 
 // Terminales
-terminal String CADENA, ENTERO, DECIMAL, ID;
+terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal String FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
 terminal String PAR1, PAR2, MAS, MENOS, UMENOS, DOSPUNTOS;
 terminal String IGUAL, EQUALS; 
@@ -105,5 +105,6 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
+            | CARACTER:a    {:  System.out.println("->"+a); RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright);  :}
             | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
 ;

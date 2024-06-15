@@ -16,3 +16,4 @@ public enum tipoDato {
     CADENA,
     VOID
 }
+//println(2+a)=12
