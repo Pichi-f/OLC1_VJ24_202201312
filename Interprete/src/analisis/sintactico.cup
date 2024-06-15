@@ -10,6 +10,7 @@ import excepciones.Errores;
 
 // Instrucciones
 import instrucciones.Print;
+import instrucciones.Declaracion;
 
 // Expresiones
 import expresiones.Nativo;
@@ -17,6 +18,7 @@ import expresiones.Aritmeticas;
 import expresiones.OperadoresAritmeticos;
 import expresiones.Relacionales;
 import expresiones.OperadoresRelacionales;
+import expresiones.AccesoVar;
 
 // Parser
 parser code
@@ -41,14 +43,16 @@ action code
 :}
 
 // Terminales
-terminal String CADENA, ENTERO, DECIMAL;
-terminal FINCADENA, IMPRIMIR;
+terminal String CADENA, ENTERO, DECIMAL, ID;
+terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS;
 terminal IGUAL, EQUALS; 
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
+nonterminal Instruccion IMPRESION, DECLARACION;
+nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 
 precedence left EQUALS;
@@ -65,9 +69,20 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {:  RESULT = a; RESULT.add(b
                 | INSTRUCCION:a                     {:  RESULT = new LinkedList<>(); RESULT.add(a);  :}
 ;
 
-INSTRUCCION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Print(a, aleft, aright);  :}
+INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
+                | DECLARACION:a     {:  RESULT = a;  :}
                 | error FINCADENA  
-                | error
+;
+
+IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Print(a, aleft, aright);  :}
+;
+
+DECLARACION ::= TIPOS:a ID:b IGUAL EXPRESION:c FINCADENA    {:  RESULT = new Declaracion(b, c, a, aleft, aright);  :}
+;
+
+TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
+        | DOUBLE  {:  RESULT = new Tipo(tipoDato.DECIMAL);  :}
+        | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
 ;
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
@@ -78,4 +93,5 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
+            | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
 ;

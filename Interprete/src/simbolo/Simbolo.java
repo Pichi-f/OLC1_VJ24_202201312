@@ -12,6 +12,7 @@ public class Simbolo {
     private Tipo tipo;
     private String id;
     private Object valor;
+    //private boolean mutabilidad; //var -> true, const -> false
 
     public Simbolo(Tipo tipo, String id) {
         this.tipo = tipo;
