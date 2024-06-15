@@ -7,6 +7,7 @@ package interprete;
 import abstracto.Instruccion;
 import analisis.parser;
 import analisis.scanner;
+import excepciones.Errores;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.LinkedList;
@@ -40,15 +41,15 @@ public class Interprete {
         // Crear las pestañas
         JTabbedPane tabbedPane = new JTabbedPane();
         try {
-            String texto = "println(1.2+\" Mi cadena \" );"
-                    + "println(2+2-1+5); println(-1.33+3.33);"
+            String texto = "println(1.2==\"true\");"
+                    + "println(2+2-1+5) println(-1.33+3.33);"
                     + "println(2+1+(2+3));"
-                    + "println(-2-1);"
+                    + "println($-2-1);"
                     + "println(1);"
                     + "println(\"True\"+\" Mi cadena \");"
                     + "println(2+1.0==2.0+1);"
                     + "println(2+\"a\");"
-                    + "println((\"hola\"==\"HoaLa\")+\"cadana\");";
+                    + "println((\"hola\"==\"HoaLa\")+\"cadana\")";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);
             var resultado = p.parse();
@@ -56,10 +57,23 @@ public class Interprete {
             var tabla = new tablaSimbolos();
             tabla.setNombre("GLOBAL");
             ast.setConsola("");
+            
+            LinkedList<Errores> lista = new LinkedList<>();
+            lista.addAll(s.listaErrores);
+            lista.addAll(p.listaErrores);
             for(var a : ast.getInstrucciones()){
+                if (a== null){
+                    continue;
+                }
                 var res = a.interpretar(ast, tabla);
+                if (res instanceof Errores){
+                    lista.add((Errores) res);
+                }
             }
             System.out.println(ast.getConsola());
+            for(var i: lista){
+                System.out.println(i);
+            }
         } catch (Exception ex) {
             System.out.println("Algo salio mal");
             System.out.println(ex);

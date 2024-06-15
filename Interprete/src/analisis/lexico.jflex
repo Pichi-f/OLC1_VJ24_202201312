@@ -2,17 +2,20 @@ package analisis;
 
 //importaciones
 import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+import excepciones.Errores;
 
 %%
 
 // Codigo de usuario
 %{
-
+    public LinkedList<Errores> listaErrores = new LinkedList<>();
 %}
 
 %init{
     yyline = 1;
     yycolumn = 1;
+    listaErrores = new LinkedList<>();
 %init}
 
 // Caracteristicas de jflex
@@ -61,3 +64,7 @@ IMPRIMIR = "println"
 <YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }
+
+<YYINITIAL> . {
+                listaErrores.add(new Errores("LEXICO", "El caracter " + yytext() + " NO pertenece al lenguaje", yyline, yycolumn));
+}
