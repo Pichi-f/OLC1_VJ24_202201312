@@ -47,7 +47,7 @@ action code
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal String FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
-terminal String PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DOSPUNTOS;
+terminal String PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, DOSPUNTOS;
 terminal String IGUAL, EQUALS; 
 terminal String CONST, VAR;
 
@@ -64,6 +64,7 @@ precedence left MAS;
 precedence left MENOS;
 precedence left UMENOS;
 precedence left MULTIPLICACION;
+precedence left DIVISION;
 
 start with INICIO;
 
@@ -100,6 +101,7 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
             | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
+            | EXPRESION:a DIVISION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);  :}
             | EXPRESION:a MULTIPLICACION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);  :}
             | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
             | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
@@ -107,6 +109,6 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
-            | CARACTER:a    {:  System.out.println("->"+a); RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright);  :}
+            | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright);  :}
             | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
 ;

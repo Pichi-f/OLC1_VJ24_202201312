@@ -62,6 +62,8 @@ public class Aritmeticas extends Instruccion {
                 this.resta(opIzq, opDer);
             case MULTIPLICACION ->
                 this.multiplicacion(opIzq, opDer);
+            case DIVISION ->
+                this.division(opIzq, opDer);
             default ->
                 new Errores("SEMANTICO", "Operador invalido", this.linea, this.col);
         };
@@ -250,7 +252,7 @@ public class Aritmeticas extends Instruccion {
             }
         }
     }
-    
+
     public Object multiplicacion(Object op1, Object op2) {
         var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
@@ -317,6 +319,97 @@ public class Aritmeticas extends Instruccion {
             }
         }
     }
+    
+    public Object division(Object op1, Object op2) {
+    var tipo1 = this.operando1.tipo.getTipo();
+    var tipo2 = this.operando2.tipo.getTipo();
+
+    switch (tipo1) {
+        case tipoDato.ENTERO -> {
+            switch (tipo2) {
+                case tipoDato.ENTERO -> {
+                    this.tipo.setTipo(tipoDato.ENTERO);
+                    if ((int) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (int) op1 / (int) op2;
+                }
+                case tipoDato.DECIMAL -> {
+                    this.tipo.setTipo(tipoDato.DECIMAL);
+                    if ((double) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (int) op1 / (double) op2;
+                }
+                case tipoDato.CARACTER -> {
+                    this.tipo.setTipo(tipoDato.ENTERO);
+                    if (((String) op2).charAt(0) == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (int) op1 / ((String) op2).charAt(0);
+                }
+                default -> {
+                    return new Errores("SEMANTICO", "División errorea", this.linea, this.col);
+                }
+            }
+        }
+        case tipoDato.DECIMAL -> {
+            switch (tipo2) {
+                case tipoDato.ENTERO -> {
+                    this.tipo.setTipo(tipoDato.DECIMAL);
+                    if ((int) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (double) op1 / (int) op2;
+                }
+                case tipoDato.DECIMAL -> {
+                    this.tipo.setTipo(tipoDato.DECIMAL);
+                    if ((double) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (double) op1 / (double) op2;
+                }
+                case tipoDato.CARACTER -> {
+                    this.tipo.setTipo(tipoDato.DECIMAL);
+                    if (((String) op2).charAt(0) == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return (double) op1 / ((String) op2).charAt(0);
+                }
+                default -> {
+                    return new Errores("SEMANTICO", "División errorea", this.linea, this.col);
+                }
+            }
+        }
+        case tipoDato.CARACTER -> {
+            switch (tipo2) {
+                case tipoDato.ENTERO -> {
+                    this.tipo.setTipo(tipoDato.ENTERO);
+                    if ((int) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return ((String) op1).charAt(0) / (int) op2;
+                }
+                case tipoDato.DECIMAL -> {
+                    this.tipo.setTipo(tipoDato.DECIMAL);
+                    if ((double) op2 == 0) {
+                        return new Errores("SEMANTICO", "No se puede dividir entre 0", this.linea, this.col);
+                    }
+                    return ((String) op1).charAt(0) / (double) op2;
+                }
+                case tipoDato.CARACTER -> {
+                    return new Errores("SEMANTICO", "No se puede dividir un caracter entre otro caracter", this.linea, this.col);
+                }
+                default -> {
+                    return new Errores("SEMANTICO", "División erronea", this.linea, this.col);
+                }
+            }
+        }
+        default -> {
+            return new Errores("SEMANTICO", "AFUERA", this.linea, this.col);
+        }
+    }
+}
 
     public Object negacion(Object op1) {
         var opU = this.operandoUnico.tipo.getTipo();

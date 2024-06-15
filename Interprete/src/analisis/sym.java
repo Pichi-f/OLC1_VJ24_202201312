@@ -10,25 +10,26 @@ public class sym {
   /* terminals */
   public static final int MENOS = 15;
   public static final int MULTIPLICACION = 17;
-  public static final int DOSPUNTOS = 18;
+  public static final int DOSPUNTOS = 19;
   public static final int CADENA = 2;
-  public static final int IGUAL = 19;
+  public static final int IGUAL = 20;
   public static final int INT = 9;
   public static final int FINCADENA = 7;
   public static final int DECIMAL = 4;
+  public static final int DIVISION = 18;
   public static final int IMPRIMIR = 8;
   public static final int UMENOS = 16;
   public static final int ID = 5;
   public static final int CARACTER = 6;
-  public static final int EQUALS = 20;
+  public static final int EQUALS = 21;
   public static final int STRING = 11;
   public static final int EOF = 0;
-  public static final int CONST = 21;
+  public static final int CONST = 22;
   public static final int error = 1;
   public static final int PAR2 = 13;
   public static final int PAR1 = 12;
   public static final int ENTERO = 3;
-  public static final int VAR = 22;
+  public static final int VAR = 23;
   public static final int MAS = 14;
   public static final int DOUBLE = 10;
   public static final String[] terminalNames = new String[] {
@@ -50,6 +51,7 @@ public class sym {
   "MENOS",
   "UMENOS",
   "MULTIPLICACION",
+  "DIVISION",
   "DOSPUNTOS",
   "IGUAL",
   "EQUALS",
