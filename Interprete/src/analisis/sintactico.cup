@@ -128,7 +128,6 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
 ;
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
-            | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
             | EXPRESION:a MODULO EXPRESION:b    {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);  :}
             | EXPRESION:a POTENCIA EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);  :}
             | EXPRESION:a DIVISION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);  :}
@@ -136,6 +135,7 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
             | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
             | EXPRESION:a IGUAL IGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);  :}%prec EQUALS
+            | EXPRESION:a MENOR EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR, aleft, aright);  :}
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
@@ -143,4 +143,5 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | TRUE:a        {:   RESULT = new Nativo(true, new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
             | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
             | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
+            | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
 ;

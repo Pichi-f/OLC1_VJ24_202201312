@@ -42,21 +42,13 @@ public class Interprete {
         JTabbedPane tabbedPane = new JTabbedPane();
         try {
             String texto = ""
-                    + "var a : inT = 10;"
-                    + "var b : bool = true;"
-                    + "var c : bool = false;"
-                    + "if(b){"
-                    + "     a = 20;"
-                    + "     println(a);"
-                    + "     if(b){"
-                    + "         a = 30;"
-                    + "         println(a);"
+                    + "var i : inT = 0;"
+                    + "for(i = 1; i<10; i = i+1){"
+                    + "     if(5<i){"
+                    + "         println(\"I es mayor a 5\");"
                     + "     }"
+                    + "     println(i);"
                     + "}"
-                    + "println(a);"
-                    + "println(c);"
-                    + "println(\"hola\"==\"HoLa\");"
-
                     + "";
             scanner s = new scanner(new BufferedReader(new StringReader(texto)));
             parser p = new parser(s);

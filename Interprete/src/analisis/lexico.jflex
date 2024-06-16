@@ -50,6 +50,8 @@ DECIMAL = [0-9]+"."[0-9]+
 ID = [a-zA-Z][a-zA-Z0-9_]*
 CADENA = [\"]([^\"])*[\"]
 CARACTER = \'[^\']\'
+COMSIM = "//"([^\r\n]*)
+COMMULT = [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]
 
 // Palabras reservadas
 IMPRIMIR = "println"
@@ -108,9 +110,12 @@ BREAK = "break"
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {MENOR} { return new Symbol(sym.MENOR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOSPUNTOS} { return new Symbol(sym.DOSPUNTOS, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }
+<YYINITIAL> {COMSIM} { }
+<YYINITIAL> {COMMULT} { }
 
 <YYINITIAL> . {
                 listaErrores.add(new Errores("LEXICO", "El caracter " + yytext() + " NO pertenece al lenguaje", yyline, yycolumn));

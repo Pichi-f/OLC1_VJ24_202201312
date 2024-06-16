@@ -29,7 +29,7 @@ public class For extends Instruccion {
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        //creamos un nuevo entorno
+        // Creamos un nuevo entorno, nuevo bloque de codigo
         var newTabla = new tablaSimbolos(tabla);
 
         // asignacion/declaracion
