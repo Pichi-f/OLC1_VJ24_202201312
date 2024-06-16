@@ -24,6 +24,8 @@ import expresiones.OperadoresAritmeticos;
 import expresiones.Relacionales;
 import expresiones.OperadoresRelacionales;
 import expresiones.AccesoVar;
+import expresiones.Logicos;
+import expresiones.OperadoresLogicos;
 
 // Parser
 parser code
@@ -51,12 +53,13 @@ action code
 terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MODULO, DOSPUNTOS;
-terminal IGUAL, EQUALS; 
+terminal IGUAL, EQUALS, DIFERENTE; 
 terminal String CONST, VAR;
 terminal TRUE, FALSE, IF, BOOL;
 terminal LLAVE1, LLAVE2;
-terminal FOR, MENOR;
+terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK;
+terminal OR, AND, XOR ,NOT;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -69,14 +72,15 @@ nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
 
-precedence left EQUALS, MENOR;
-precedence left MAS;
-precedence left MENOS;
-precedence left UMENOS;
-precedence left MULTIPLICACION;
-precedence left DIVISION;
+precedence left OR;
+precedence left AND;
+precedence left XOR;
+precedence left NOT;
+precedence left EQUALS, MENOR, MAYOR, DIFERENTE, MENORIGUAL, MAYORIGUAL;
+precedence left MAS, MENOS;
+precedence left MULTIPLICACION, DIVISION, MODULO;
 precedence nonassoc POTENCIA;
-precedence left MODULO;
+precedence left UMENOS;
 
 start with INICIO;
 
@@ -135,7 +139,15 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
             | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
             | EXPRESION:a IGUAL IGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);  :}%prec EQUALS
+            | EXPRESION:a DIFERENTE EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.DIFERENTE, aleft, aright);  :}%prec DIFERENTE
+            | EXPRESION:a MENORIGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MENORIGUAL, aleft, aright);  :}
+            | EXPRESION:a MAYORIGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYORIGUAL, aleft, aright);  :}
             | EXPRESION:a MENOR EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR, aleft, aright);  :}
+            | EXPRESION:a MAYOR EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYOR, aleft, aright);  :}
+            | EXPRESION:a OR EXPRESION:b        {:  RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);  :}%prec OR
+            | EXPRESION:a AND EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);  :}%prec AND
+            | EXPRESION:a XOR EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);  :}%prec XOR
+            | NOT EXPRESION:a                    {:  RESULT = new Logicos(a, OperadoresLogicos.NOT, aleft, aright);  :}%prec NOT
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}

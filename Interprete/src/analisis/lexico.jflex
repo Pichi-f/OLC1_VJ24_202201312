@@ -39,11 +39,19 @@ MULTIPLICACION = "*"
 MAS = "+"
 MENOS = "-"
 IGUAL = "="
+DIFERENTE = "!="
 FINCADENA = ";"
 DOSPUNTOS = ":"
 LLAVE1 = "{"
 LLAVE2 = "}"
 MENOR = "<"
+MAYOR = ">"
+MENORIGUAL = "<="
+MAYORIGUAL = ">="
+OR = "||"
+AND = "&&"
+XOR = "^"
+NOT = "!"
 BLANCOS = [\ \t\n\r\f]+
 ENTERO = [0-9]+
 DECIMAL = [0-9]+"."[0-9]+
@@ -110,7 +118,15 @@ BREAK = "break"
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {MENORIGUAL} { return new Symbol(sym.MENORIGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {MAYORIGUAL} { return new Symbol(sym.MAYORIGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DIFERENTE} { return new Symbol(sym.DIFERENTE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {MAYOR} { return new Symbol(sym.MAYOR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOR} { return new Symbol(sym.MENOR, yyline, yycolumn, yytext()); }
+<YYINITIAL> {OR} { return new Symbol(sym.OR, yyline, yycolumn, yytext()); }
+<YYINITIAL> {AND} { return new Symbol(sym.AND, yyline, yycolumn, yytext()); }
+<YYINITIAL> {XOR} { return new Symbol(sym.XOR, yyline, yycolumn, yytext()); }
+<YYINITIAL> {NOT} { return new Symbol(sym.NOT, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOSPUNTOS} { return new Symbol(sym.DOSPUNTOS, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }

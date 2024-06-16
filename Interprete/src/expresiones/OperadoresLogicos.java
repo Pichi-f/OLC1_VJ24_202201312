@@ -8,12 +8,9 @@ package expresiones;
  *
  * @author pichi
  */
-public enum OperadoresRelacionales {
-    EQUALS,
-    MAYOR,
-    MENOR,
-    DIFERENTE,
-    MENORIGUAL,
-    MAYORIGUAL
-    
+public enum OperadoresLogicos {
+    OR,
+    AND,
+    XOR,
+    NOT
 }
