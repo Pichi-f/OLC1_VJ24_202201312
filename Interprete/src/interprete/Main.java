@@ -6,17 +6,14 @@ import analisis.scanner;
 import excepciones.Errores;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.StringReader;
+import java.awt.event.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import simbolo.Arbol;
 import simbolo.tablaSimbolos;
 
-/**
- * main
- */
 public class Main {
 
     public static void main(String[] args) {
@@ -26,67 +23,89 @@ public class Main {
 
         // Crear el menú
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(new JMenu("Archivo"));
+        JMenu archivoMenu = new JMenu("Archivo");
+        menuBar.add(archivoMenu);
         menuBar.add(new JMenu("Pestañas"));
         JMenu ejecutarMenu = new JMenu("Ejecutar");
         menuBar.add(ejecutarMenu);
-        menuBar.add(new JMenu("Reportes"));
+        JMenu reportesMenu = new JMenu("Reportes");
+        menuBar.add(reportesMenu);
 
-        // Crear el elemento de menú Ejecutar
         JMenuItem ejecutarItem = new JMenuItem("Ejecutar");
         ejecutarMenu.add(ejecutarItem);
 
-        // Crear las pestañas
-        JTabbedPane tabbedPane = new JTabbedPane();
+        JMenuItem nuevoArchivoItem = new JMenuItem("Nuevo Archivo");
+        archivoMenu.add(nuevoArchivoItem);
 
-        // Crear las pestañas con los JLabel y los JSplitPane
+        JMenuItem abrirArchivoItem = new JMenuItem("Abrir Archivo");
+        archivoMenu.add(abrirArchivoItem);
+
+        JMenuItem generarReporteItem = new JMenuItem("Generar Reporte");
+        reportesMenu.add(generarReporteItem);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        ArrayList<JTextArea> textAreas1 = new ArrayList<>();
+
         for (int i = 1; i <= 3; i++) {
-            // Crear los editores de texto
             JTextArea textArea1 = new JTextArea();
             JTextArea textArea2 = new JTextArea();
+            textAreas1.add(textArea1);
 
-            // Agregar barras de desplazamiento a los editores de texto
             JScrollPane scrollPane1 = new JScrollPane(textArea1);
             JScrollPane scrollPane2 = new JScrollPane(textArea2);
 
-            // Crear el JLabel para el primer editor de texto
             JLabel label1 = new JLabel("Entrada");
             label1.setHorizontalAlignment(JLabel.CENTER);
 
-            // Crear el JPanel para el primer editor de texto y añadir el JLabel y el JScrollPane
             JPanel panel1 = new JPanel(new BorderLayout());
             panel1.add(label1, BorderLayout.NORTH);
             panel1.add(scrollPane1, BorderLayout.CENTER);
 
-            // Crear el JLabel para el segundo editor de texto
             JLabel label2 = new JLabel("Salida");
             label2.setHorizontalAlignment(JLabel.CENTER);
 
-            // Crear el JPanel para el segundo editor de texto y añadir el JLabel y el JScrollPane
             JPanel panel2 = new JPanel(new BorderLayout());
             panel2.add(label2, BorderLayout.NORTH);
             panel2.add(scrollPane2, BorderLayout.CENTER);
 
-            // Crear el JSplitPane y añadir los JPanel
             JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panel1, panel2);
-            splitPane.setResizeWeight(0.5); // Esto hará que ambos JPanel tengan el mismo tamaño
+            splitPane.setResizeWeight(0.5); 
 
-            // Añadir la pestaña al JTabbedPane
             tabbedPane.addTab("Tab " + i, splitPane);
         }
 
-        // Agregar el ActionListener al menú Ejecutar
+        abrirArchivoItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int seleccion = fileChooser.showOpenDialog(frame);
+                if (seleccion == JFileChooser.APPROVE_OPTION) {
+                    File archivoSeleccionado = fileChooser.getSelectedFile();
+                    try {
+                        String contenido = new String(Files.readAllBytes(archivoSeleccionado.toPath()));
+                        int selectedIndex = tabbedPane.getSelectedIndex();
+                        if (selectedIndex != -1) {
+                            JTextArea textArea1 = textAreas1.get(selectedIndex);
+                            textArea1.setText(contenido);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(frame, "Error al abrir el archivo: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
         ejecutarItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Obtener la pestaña seleccionada
                 int selectedIndex = tabbedPane.getSelectedIndex();
                 if (selectedIndex != -1) {
                     JSplitPane splitPane = (JSplitPane) tabbedPane.getComponentAt(selectedIndex);
                     JPanel panel1 = (JPanel) splitPane.getTopComponent();
                     JScrollPane scrollPane1 = (JScrollPane) panel1.getComponent(1);
                     JTextArea textArea1 = (JTextArea) scrollPane1.getViewport().getView();
-                    
+
                     JPanel panel2 = (JPanel) splitPane.getBottomComponent();
                     JScrollPane scrollPane2 = (JScrollPane) panel2.getComponent(1);
                     JTextArea textArea2 = (JTextArea) scrollPane2.getViewport().getView();
@@ -124,17 +143,41 @@ public class Main {
             }
         });
 
-        // Añadir el menú y las pestañas al frame
+        generarReporteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedIndex = tabbedPane.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    JSplitPane splitPane = (JSplitPane) tabbedPane.getComponentAt(selectedIndex);
+                    JPanel panel2 = (JPanel) splitPane.getBottomComponent();
+                    JScrollPane scrollPane2 = (JScrollPane) panel2.getComponent(1);
+                    JTextArea textArea2 = (JTextArea) scrollPane2.getViewport().getView();
+                    
+                    try {
+                        String errores = textArea2.getText();
+                        if (!errores.isEmpty()) {
+                            String htmlContent = "<html><head><title>Reporte de Errores</title></head><body>";
+                            htmlContent += "<h1>Reporte de Errores</h1><pre>" + errores + "</pre></body></html>";
+
+                            Files.write(Paths.get("reporteErrores.html"), htmlContent.getBytes());
+
+                            JOptionPane.showMessageDialog(frame, "Reporte generado exitosamente.", "Reporte", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "No hay errores para reportar.", "Reporte", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(frame, "Error al generar el reporte: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
         frame.setJMenuBar(menuBar);
         frame.add(tabbedPane);
 
-        // Centrar la ventana en la pantalla
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
-    }
-
-    void setVisible(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

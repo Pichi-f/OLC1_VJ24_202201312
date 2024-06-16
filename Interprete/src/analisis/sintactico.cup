@@ -16,6 +16,7 @@ import instrucciones.AsignacionVar;
 import instrucciones.If;
 import instrucciones.For;
 import instrucciones.Break;
+import instrucciones.While;
 
 // Expresiones
 import expresiones.Nativo;
@@ -55,7 +56,7 @@ terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MODULO, DOSPUNTOS;
 terminal IGUAL, EQUALS, DIFERENTE; 
 terminal String CONST, VAR;
-terminal TRUE, FALSE, IF, BOOL;
+terminal TRUE, FALSE, IF, BOOL, WHILE;
 terminal LLAVE1, LLAVE2;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK;
@@ -66,6 +67,7 @@ nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
 nonterminal Instruccion SIF;
+nonterminal Instruccion SWHILE;
 nonterminal Instruccion CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion BREAKK;
 nonterminal Tipo TIPOS;
@@ -75,7 +77,7 @@ nonterminal String MUTABILIDAD;
 precedence left OR;
 precedence left AND;
 precedence left XOR;
-precedence left NOT;
+precedence right NOT;
 precedence left EQUALS, MENOR, MAYOR, DIFERENTE, MENORIGUAL, MAYORIGUAL;
 precedence left MAS, MENOS;
 precedence left MULTIPLICACION, DIVISION, MODULO;
@@ -97,6 +99,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
+                | SWHILE:a          {:   RESULT=a;   :}
                 | error FINCADENA  
 ;
 
@@ -125,6 +128,9 @@ ACTUALIZA_FOR ::= ID:a IGUAL EXPRESION:b {:   RESULT=new AsignacionVar(a, b, ale
 BREAKK ::= BREAK:a FINCADENA      {:    RESULT = new Break(aleft, aright);     :}
 ;
 
+SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RESULT = new While(a, b, aleft, aright);   :}
+;
+
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
         | DOUBLE  {:  RESULT = new Tipo(tipoDato.DECIMAL);  :}
         | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
@@ -132,7 +138,7 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
 ;
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
-            | EXPRESION:a MODULO EXPRESION:b    {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);  :}
+            | EXPRESION:a MODULO EXPRESION:b    {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);  :}%prec MODULO
             | EXPRESION:a POTENCIA EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);  :}
             | EXPRESION:a DIVISION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);  :}
             | EXPRESION:a MULTIPLICACION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);  :}

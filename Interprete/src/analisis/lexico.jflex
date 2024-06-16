@@ -74,6 +74,7 @@ FALSE = "false"
 BOOL = "bool"
 FOR = "for"
 BREAK = "break"
+WHILE = "while"
 
 
 %%
@@ -87,6 +88,7 @@ BREAK = "break"
 <YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
 <YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
+<YYINITIAL> {WHILE} {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }

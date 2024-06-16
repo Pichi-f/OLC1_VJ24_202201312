@@ -21,6 +21,10 @@ public class Errores {
         this.columna = columna;
     }
 
+    public Errores(String error_1, int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getTipo() {
         return tipo;
     }

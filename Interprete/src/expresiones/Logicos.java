@@ -34,28 +34,20 @@ public class Logicos extends Instruccion {
         this.negacion = negacion;
     }
     
-    
-    
-
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        var resultado1 = cond1.interpretar(arbol, tabla);
+        Object resultado1 = cond1.interpretar(arbol, tabla);
         if (resultado1 instanceof Errores) {
             return resultado1;
         }
 
-        var resultado2 = cond2.interpretar(arbol, tabla);
-        if (resultado2 instanceof Errores) {
-            return resultado2;
-        }
-
         switch (operador) {
             case OR:
-                return or(resultado1, resultado2);
+                return or(resultado1, cond2.interpretar(arbol, tabla));
             case AND:
-                return and(resultado1, resultado2);
+                return and(resultado1, cond2.interpretar(arbol, tabla));
             case XOR:
-                return xor(resultado1, resultado2);
+                return xor(resultado1, cond2.interpretar(arbol, tabla));
             case NOT:
                 return not(resultado1);
             default:
@@ -87,9 +79,9 @@ public class Logicos extends Instruccion {
         }
     }
 
-    public Object not(Object negacion) {
-        if (negacion instanceof Boolean) {
-            return !(boolean) negacion;
+    public Object not(Object comp1) {
+        if (comp1 instanceof Boolean) {
+            return !(boolean) comp1;
         } else {
             return new Errores("SEMANTICO", "Operación NOT no válida para tipos no booleanos", this.linea, this.col);
         }
