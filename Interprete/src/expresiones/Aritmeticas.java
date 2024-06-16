@@ -76,8 +76,6 @@ public class Aritmeticas extends Instruccion {
     public Object suma(Object op1, Object op2) {
         var tipo1 = this.operando1.tipo.getTipo();
         var tipo2 = this.operando2.tipo.getTipo();
-        System.out.println(op2 + "a");
-        System.out.println(tipo2);
         switch (tipo1) {
             case tipoDato.ENTERO -> {
                 switch (tipo2) {

@@ -27,57 +27,6 @@ public class Interprete {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        JFrame frame = new JFrame("JavaCraft");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 850);
-
-        // Crear el menú
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.add(new JMenu("Archivo"));
-        menuBar.add(new JMenu("Pestañas"));
-        menuBar.add(new JMenu("Ejecutar"));
-        menuBar.add(new JMenu("Reportes"));
-
-        // Crear las pestañas
-        JTabbedPane tabbedPane = new JTabbedPane();
-        try {
-            String texto = ""
-                    + "var i : inT = 0;"
-                    + "for(i = 1; i<10; i = i+1){"
-                    + "     if(5<i){"
-                    + "         println(\"I es mayor a 5\");"
-                    + "     }"
-                    + "     println(i);"
-                    + "}"
-                    + "";
-            scanner s = new scanner(new BufferedReader(new StringReader(texto)));
-            parser p = new parser(s);
-            var resultado = p.parse();
-            var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
-            var tabla = new tablaSimbolos();
-            tabla.setNombre("GLOBAL");
-            ast.setConsola("");
-            
-            LinkedList<Errores> lista = new LinkedList<>();
-            lista.addAll(s.listaErrores);
-            lista.addAll(p.listaErrores);
-            for(var a : ast.getInstrucciones()){
-                if (a== null){
-                    continue;
-                }
-                var res = a.interpretar(ast, tabla);
-                if (res instanceof Errores){
-                    lista.add((Errores) res);
-                }
-            }
-            System.out.println(ast.getConsola());
-            for(var i: lista){
-                System.out.println(i);
-            }
-        } catch (Exception ex) {
-            System.out.println("Algo salio mal");
-            System.out.println(ex);
-        }
     }
     
 }
