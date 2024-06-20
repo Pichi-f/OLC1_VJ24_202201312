@@ -36,9 +36,20 @@ public class Logicos extends Instruccion {
     
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        Object resultado1 = cond1.interpretar(arbol, tabla);
-        if (resultado1 instanceof Errores) {
-            return resultado1;
+        Object resultado1 = null;
+        
+        if (operador == OperadoresLogicos.NOT && negacion != null) {
+            resultado1 = negacion.interpretar(arbol, tabla);
+            if (resultado1 instanceof Errores) {
+                return resultado1;
+            }
+            return not(resultado1);
+        } else {
+            // Manejo de las demás operaciones lógicas
+            resultado1 = cond1.interpretar(arbol, tabla);
+            if (resultado1 instanceof Errores) {
+                return resultado1;
+            }
         }
 
         switch (operador) {
@@ -48,8 +59,7 @@ public class Logicos extends Instruccion {
                 return and(resultado1, cond2.interpretar(arbol, tabla));
             case XOR:
                 return xor(resultado1, cond2.interpretar(arbol, tabla));
-            case NOT:
-                return not(resultado1);
+            // El caso NOT se maneja antes para el caso de una sola condición
             default:
                 return new Errores("SEMANTICO", "Operador lógico inválido", this.linea, this.col);
         }

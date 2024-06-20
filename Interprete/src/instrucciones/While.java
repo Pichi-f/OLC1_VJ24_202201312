@@ -7,7 +7,7 @@ package instrucciones;
 import abstracto.Instruccion;
 import excepciones.Errores;
 import java.util.LinkedList;
-import simbolo.Tipo;
+
 import simbolo.*;
 
 /**
@@ -40,21 +40,18 @@ public class While extends Instruccion {
                     this.linea, this.col);
         }
         while ((boolean) this.condicion.interpretar(arbol, newTabla)) {
-            // creacion nuevo entorno
-            var newTabla2 = new tablaSimbolos(newTabla);
-            for (var i : this.instrucciones) {
-                if (i instanceof Break) {
-                    return null;
-                }
-                var resIns = i.interpretar(arbol, newTabla2);
-                if (resIns instanceof Break) {
-                    return null;
-                }
-                if (resIns instanceof Errores) {
-                    return resIns;
-                }
+        var newTabla2 = new tablaSimbolos(newTabla);
+        for (var instruccion : this.instrucciones) {
+            // Verificar la condición antes de ejecutar instrucciones que podrían contener bucles anidados
+            if (!(boolean) this.condicion.interpretar(arbol, newTabla2)) {
+                break; // Salir del bucle si la condición ya no se cumple
+            }
+            var resultadoInstruccion = instruccion.interpretar(arbol, newTabla2);
+            if (resultadoInstruccion instanceof Break || resultadoInstruccion instanceof Errores) {
+                return resultadoInstruccion; // Manejar 'break' y errores adecuadamente
             }
         }
+    }
         return null;
     }
 }
