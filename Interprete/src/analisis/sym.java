@@ -17,18 +17,19 @@ public class sym {
   public static final int LLAVE1 = 33;
   public static final int IMPRIMIR = 8;
   public static final int ENTERO = 3;
-  public static final int XOR = 43;
+  public static final int XOR = 44;
   public static final int DIFERENTE = 24;
   public static final int DOUBLE = 10;
+  public static final int CONTINUE = 41;
   public static final int INT = 9;
   public static final int FOR = 35;
-  public static final int NOT = 44;
-  public static final int AND = 42;
+  public static final int NOT = 45;
+  public static final int AND = 43;
   public static final int MENORIGUAL = 38;
   public static final int FINCADENA = 7;
   public static final int IGUAL = 22;
   public static final int CARACTER = 6;
-  public static final int OR = 41;
+  public static final int OR = 42;
   public static final int BOOL = 30;
   public static final int UMENOS = 16;
   public static final int IF = 29;
@@ -95,6 +96,7 @@ public class sym {
   "MENORIGUAL",
   "MAYORIGUAL",
   "BREAK",
+  "CONTINUE",
   "OR",
   "AND",
   "XOR",

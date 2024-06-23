@@ -40,18 +40,25 @@ public class While extends Instruccion {
                     this.linea, this.col);
         }
         while ((boolean) this.condicion.interpretar(arbol, newTabla)) {
-        var newTabla2 = new tablaSimbolos(newTabla);
-        for (var instruccion : this.instrucciones) {
-            // Verificar la condición antes de ejecutar instrucciones que podrían contener bucles anidados
-            if (!(boolean) this.condicion.interpretar(arbol, newTabla2)) {
-                break;
-            }
-            var resultadoInstruccion = instruccion.interpretar(arbol, newTabla2);
-            if (resultadoInstruccion instanceof Break || resultadoInstruccion instanceof Errores) {
-                return resultadoInstruccion; // Manejar 'break' y errores adecuadamente
+            var newTabla2 = new tablaSimbolos(newTabla);
+            for (var instruccion : this.instrucciones) {
+                // Verificar la condición antes de ejecutar instrucciones que podrían contener bucles anidados
+                if (!(boolean) this.condicion.interpretar(arbol, newTabla2)) {
+                    break;
+                }
+                var resultadoInstruccion = instruccion.interpretar(arbol, newTabla2);
+                if (resultadoInstruccion instanceof Break) {
+                    return null; // Manejar 'break' adecuadamente
+                }
+                if (resultadoInstruccion instanceof Continue) {
+                    // Saltar a la siguiente iteración del ciclo
+                    break;
+                }
+                if (resultadoInstruccion instanceof Errores) {
+                    return resultadoInstruccion; // Manejar errores adecuadamente
+                }
             }
         }
-    }
         return null;
     }
 }

@@ -16,6 +16,7 @@ import instrucciones.AsignacionVar;
 import instrucciones.If;
 import instrucciones.For;
 import instrucciones.Break;
+import instrucciones.Continue;
 import instrucciones.While;
 import instrucciones.DoWhile;
 
@@ -60,7 +61,7 @@ terminal String CONST, VAR;
 terminal TRUE, FALSE, IF, BOOL, WHILE, DO;
 terminal LLAVE1, LLAVE2;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
-terminal String BREAK;
+terminal String BREAK, CONTINUE;
 terminal OR, AND, XOR ,NOT;
 
 // No terminales
@@ -72,6 +73,7 @@ nonterminal Instruccion SWHILE;
 nonterminal Instruccion SDO_WHILE;
 nonterminal Instruccion CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion BREAKK;
+nonterminal Instruccion CONTINUEE;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
@@ -101,6 +103,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
+                | CONTINUEE:a       {:   RESULT=a;   :}
                 | SDO_WHILE:a       {:   RESULT=a;   :}
                 | SWHILE:a          {:   RESULT=a;   :}
                 | error FINCADENA  
@@ -129,6 +132,9 @@ ACTUALIZA_FOR ::= ID:a IGUAL EXPRESION:b {:   RESULT=new AsignacionVar(a, b, ale
 ;
 
 BREAKK ::= BREAK:a FINCADENA      {:    RESULT = new Break(aleft, aright);     :}
+;
+
+CONTINUEE ::= CONTINUE:a FINCADENA  {:    RESULT = new Continue(aleft, aright);  :}
 ;
 
 SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RESULT = new While(a, b, aleft, aright);   :}

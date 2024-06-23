@@ -74,6 +74,7 @@ FALSE = "false"
 BOOL = "bool"
 FOR = "for"
 BREAK = "break"
+CONTINUE = "continue"
 WHILE = "while"
 DO = "do"
 
@@ -89,6 +90,7 @@ DO = "do"
 <YYINITIAL> {BOOL} {return new Symbol(sym.BOOL, yyline, yycolumn,yytext());}
 <YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
+<YYINITIAL> {CONTINUE} {return new Symbol(sym.CONTINUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {WHILE} {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
 <YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
 

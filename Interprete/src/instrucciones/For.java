@@ -62,6 +62,13 @@ public class For extends Instruccion {
                 if (resIns instanceof Break) {
                     return null;
                 }
+                if (resIns instanceof Continue) {
+                    // Si encontramos un continue, saltamos a la siguiente iteración
+                    break;
+                }
+                if (resIns instanceof Errores) {
+                    return resIns;
+                }
             }
 
             //actualizar la variable
