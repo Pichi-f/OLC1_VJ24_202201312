@@ -29,32 +29,25 @@ public class DoWhile extends Instruccion {
         // se crea nuevo entorno
         var newTabla = new tablaSimbolos(tabla);
 
+        var cond = this.condicion.interpretar(arbol, tabla);
+        if (cond instanceof Errores) {
+            return cond;
+        }
+        if (this.condicion.tipo.getTipo() != tipoDato.BOOLEANO){
+            return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
+        }
         do {
-            // entorno para do
             var newTabla2 = new tablaSimbolos(newTabla);
-
-            for (var i : this.instrucciones) {
-                if (i instanceof Break) {
-                    return null;
+            for (var instruccion : this.instrucciones) {
+                if(!(boolean) this.condicion.interpretar(arbol, newTabla2)){
+                    break;
                 }
-                var resIns = i.interpretar(arbol, newTabla2);
-                if (resIns instanceof Break) {
-                    return null;
-                }
-                if (resIns instanceof Errores) {
-                    return resIns;
+                var resultadoInstruccion = instruccion.interpretar(arbol, newTabla2);
+                if (resultadoInstruccion instanceof Break || resultadoInstruccion instanceof Errores) {
+                    return resultadoInstruccion; // Manejar 'break' y errores adecuadamente
                 }
             }
-            // validacion 
-            var cond = this.condicion.interpretar(arbol, newTabla);
-            if (cond instanceof Errores) {
-                return cond;
-            }
-            if (this.condicion.tipo.getTipo() != tipoDato.BOOLEANO) {
-                return new Errores("SEMANTICO", "La condición debe ser booleana",
-                        this.linea, this.col);
-            }
-        } while ((boolean) this.condicion.interpretar(arbol, newTabla));
+        } while ((boolean) this.condicion.interpretar(arbol, tabla));
 
         return null;
     }

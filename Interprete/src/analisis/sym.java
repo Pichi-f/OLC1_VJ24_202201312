@@ -12,28 +12,28 @@ public class sym {
   public static final int DOSPUNTOS = 21;
   public static final int PAR1 = 12;
   public static final int CONST = 25;
-  public static final int LLAVE2 = 33;
+  public static final int LLAVE2 = 34;
   public static final int EQUALS = 23;
-  public static final int LLAVE1 = 32;
+  public static final int LLAVE1 = 33;
   public static final int IMPRIMIR = 8;
   public static final int ENTERO = 3;
-  public static final int XOR = 42;
+  public static final int XOR = 43;
   public static final int DIFERENTE = 24;
   public static final int DOUBLE = 10;
   public static final int INT = 9;
-  public static final int FOR = 34;
-  public static final int NOT = 43;
-  public static final int AND = 41;
-  public static final int MENORIGUAL = 37;
+  public static final int FOR = 35;
+  public static final int NOT = 44;
+  public static final int AND = 42;
+  public static final int MENORIGUAL = 38;
   public static final int FINCADENA = 7;
   public static final int IGUAL = 22;
   public static final int CARACTER = 6;
-  public static final int OR = 40;
+  public static final int OR = 41;
   public static final int BOOL = 30;
   public static final int UMENOS = 16;
   public static final int IF = 29;
   public static final int ID = 5;
-  public static final int MAYORIGUAL = 38;
+  public static final int MAYORIGUAL = 39;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
   public static final int TRUE = 27;
@@ -41,15 +41,16 @@ public class sym {
   public static final int CADENA = 2;
   public static final int MODULO = 20;
   public static final int MENOS = 15;
-  public static final int MENOR = 35;
-  public static final int BREAK = 39;
-  public static final int MAYOR = 36;
+  public static final int MENOR = 36;
+  public static final int BREAK = 40;
+  public static final int MAYOR = 37;
   public static final int POTENCIA = 19;
   public static final int WHILE = 31;
   public static final int STRING = 11;
   public static final int FALSE = 28;
   public static final int DIVISION = 18;
   public static final int VAR = 26;
+  public static final int DO = 32;
   public static final int MULTIPLICACION = 17;
   public static final int MAS = 14;
   public static final String[] terminalNames = new String[] {
@@ -85,6 +86,7 @@ public class sym {
   "IF",
   "BOOL",
   "WHILE",
+  "DO",
   "LLAVE1",
   "LLAVE2",
   "FOR",

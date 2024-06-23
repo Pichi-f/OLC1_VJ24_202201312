@@ -44,7 +44,7 @@ public class While extends Instruccion {
         for (var instruccion : this.instrucciones) {
             // Verificar la condición antes de ejecutar instrucciones que podrían contener bucles anidados
             if (!(boolean) this.condicion.interpretar(arbol, newTabla2)) {
-                break; // Salir del bucle si la condición ya no se cumple
+                break;
             }
             var resultadoInstruccion = instruccion.interpretar(arbol, newTabla2);
             if (resultadoInstruccion instanceof Break || resultadoInstruccion instanceof Errores) {

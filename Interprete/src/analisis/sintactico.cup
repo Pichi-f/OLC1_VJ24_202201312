@@ -17,6 +17,7 @@ import instrucciones.If;
 import instrucciones.For;
 import instrucciones.Break;
 import instrucciones.While;
+import instrucciones.DoWhile;
 
 // Expresiones
 import expresiones.Nativo;
@@ -56,7 +57,7 @@ terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MODULO, DOSPUNTOS;
 terminal IGUAL, EQUALS, DIFERENTE; 
 terminal String CONST, VAR;
-terminal TRUE, FALSE, IF, BOOL, WHILE;
+terminal TRUE, FALSE, IF, BOOL, WHILE, DO;
 terminal LLAVE1, LLAVE2;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK;
@@ -68,6 +69,7 @@ nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
 nonterminal Instruccion SIF;
 nonterminal Instruccion SWHILE;
+nonterminal Instruccion SDO_WHILE;
 nonterminal Instruccion CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion BREAKK;
 nonterminal Tipo TIPOS;
@@ -99,6 +101,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
+                | SDO_WHILE:a       {:   RESULT=a;   :}
                 | SWHILE:a          {:   RESULT=a;   :}
                 | error FINCADENA  
 ;
@@ -129,6 +132,9 @@ BREAKK ::= BREAK:a FINCADENA      {:    RESULT = new Break(aleft, aright);     :
 ;
 
 SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RESULT = new While(a, b, aleft, aright);   :}
+;
+
+SDO_WHILE ::= DO LLAVE1 INSTRUCCIONES:a LLAVE2 WHILE PAR1 EXPRESION:b PAR2 FINCADENA     {:   RESULT = new DoWhile(b, a, aleft, aright);   :}
 ;
 
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}

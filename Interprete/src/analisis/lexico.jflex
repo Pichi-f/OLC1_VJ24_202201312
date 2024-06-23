@@ -75,6 +75,7 @@ BOOL = "bool"
 FOR = "for"
 BREAK = "break"
 WHILE = "while"
+DO = "do"
 
 
 %%
@@ -89,6 +90,7 @@ WHILE = "while"
 <YYINITIAL> {FOR} {return new Symbol(sym.FOR, yyline, yycolumn,yytext());}
 <YYINITIAL> {BREAK} {return new Symbol(sym.BREAK, yyline, yycolumn,yytext());}
 <YYINITIAL> {WHILE} {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
+<YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
