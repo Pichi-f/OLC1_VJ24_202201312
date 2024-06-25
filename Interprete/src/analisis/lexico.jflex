@@ -42,8 +42,11 @@ IGUAL = "="
 DIFERENTE = "!="
 FINCADENA = ";"
 DOSPUNTOS = ":"
+COMA = ","
 LLAVE1 = "{"
 LLAVE2 = "}"
+CORCHETE1 = "["
+CORCHETE2 = "]"
 MENOR = "<"
 MAYOR = ">"
 MENORIGUAL = "<="
@@ -116,6 +119,8 @@ DO = "do"
 <YYINITIAL> {PAR2} { return new Symbol(sym.PAR2, yyline, yycolumn, yytext()); }
 <YYINITIAL> {LLAVE1} {return new Symbol(sym.LLAVE1, yyline, yycolumn,yytext());}
 <YYINITIAL> {LLAVE2} {return new Symbol(sym.LLAVE2, yyline, yycolumn,yytext());}
+<YYINITIAL> {CORCHETE1} {return new Symbol(sym.CORCHETE1, yyline, yycolumn,yytext());}
+<YYINITIAL> {CORCHETE2} {return new Symbol(sym.CORCHETE2, yyline, yycolumn,yytext());}
 
 <YYINITIAL> {MODULO} { return new Symbol(sym.MODULO, yyline, yycolumn, yytext()); }
 <YYINITIAL> {POTENCIA} { return new Symbol(sym.POTENCIA, yyline, yycolumn, yytext()); }
@@ -134,6 +139,7 @@ DO = "do"
 <YYINITIAL> {XOR} { return new Symbol(sym.XOR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {NOT} { return new Symbol(sym.NOT, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOSPUNTOS} { return new Symbol(sym.DOSPUNTOS, yyline, yycolumn, yytext()); }
+<YYINITIAL> {COMA} { return new Symbol(sym.COMA, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }
 <YYINITIAL> {COMSIM} { }

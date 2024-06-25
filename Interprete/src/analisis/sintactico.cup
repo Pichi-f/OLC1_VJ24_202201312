@@ -19,6 +19,7 @@ import instrucciones.Break;
 import instrucciones.Continue;
 import instrucciones.While;
 import instrucciones.DoWhile;
+import instrucciones.DeclaracionVec;
 
 // Expresiones
 import expresiones.Nativo;
@@ -54,12 +55,12 @@ action code
 
 // Terminales
 terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
-terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING;
+terminal FINCADENA, IMPRIMIR, INT, DOUBLE, STRING, CHAR;
 terminal PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MODULO, DOSPUNTOS;
 terminal IGUAL, EQUALS, DIFERENTE; 
 terminal String CONST, VAR;
 terminal TRUE, FALSE, IF, BOOL, WHILE, DO;
-terminal LLAVE1, LLAVE2;
+terminal LLAVE1, LLAVE2, CORCHETE1, CORCHETE2, COMA;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK, CONTINUE;
 terminal OR, AND, XOR ,NOT;
@@ -67,7 +68,7 @@ terminal OR, AND, XOR ,NOT;
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION;
+nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION, DECLARACION_VEC;
 nonterminal Instruccion SIF;
 nonterminal Instruccion SWHILE;
 nonterminal Instruccion SDO_WHILE;
@@ -77,6 +78,8 @@ nonterminal Instruccion CONTINUEE;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
+nonterminal LinkedList<Instruccion> LISTA_VALORES;
+nonterminal LinkedList<LinkedList<Instruccion>> LISTA_VALORES_2D;
 
 precedence left OR;
 precedence left AND;
@@ -100,6 +103,7 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {:  RESULT = a; RESULT.add(b
 INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | DECLARACION:a     {:  RESULT = a;  :}
                 | ASIGNACION:a      {:  RESULT = a;  :}
+                | DECLARACION_VEC:a {:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
@@ -114,6 +118,21 @@ IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Pri
 
 DECLARACION ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA    {:  RESULT = new Declaracion(m, b, c, a, aleft, aright);  :}
 ;
+
+DECLARACION_VEC ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTA_VALORES:valores CORCHETE2 FINCADENA
+                    {: RESULT = new DeclaracionVec(m, b, valores, 1, a, aleft, aright); :}
+                | MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTA_VALORES_2D:valores2d CORCHETE2 FINCADENA
+                    {: LinkedList<Instruccion> flattenedList = new LinkedList<>(); for (LinkedList<Instruccion> list : valores2d) { flattenedList.addAll(list); } RESULT = new DeclaracionVec(m, b, flattenedList, 2, a, aleft, aright); :}
+;  
+
+LISTA_VALORES ::= LISTA_VALORES:lista COMA EXPRESION:exp {: lista.add(exp); RESULT = lista; :}
+                | EXPRESION:exp                         {: RESULT = new LinkedList<>(); RESULT.add(exp); :}
+;
+
+LISTA_VALORES_2D ::= LISTA_VALORES_2D:lista2d COMA CORCHETE1 LISTA_VALORES:lista CORCHETE2 {: lista2d.add(lista); RESULT = lista2d; :}
+                   | CORCHETE1 LISTA_VALORES:lista CORCHETE2                             {: RESULT = new LinkedList<>(); RESULT.add(lista); :}
+;
+
 
 MUTABILIDAD ::= CONST     {:  RESULT = "CONST";  :}
                 | VAR      {:  RESULT = "VAR";  :}
@@ -146,6 +165,7 @@ SDO_WHILE ::= DO LLAVE1 INSTRUCCIONES:a LLAVE2 WHILE PAR1 EXPRESION:b PAR2 FINCA
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
         | DOUBLE  {:  RESULT = new Tipo(tipoDato.DECIMAL);  :}
         | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
+        | CHAR    {:  RESULT = new Tipo(tipoDato.CARACTER);  :}
         | BOOL    {:  RESULT = new Tipo(tipoDato.BOOLEANO);  :}
 ;
 
