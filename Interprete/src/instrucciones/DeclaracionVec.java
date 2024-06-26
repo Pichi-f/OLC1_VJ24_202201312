@@ -28,53 +28,33 @@ public class DeclaracionVec extends Instruccion {
     }
     
     @Override
-public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-    LinkedList<Object> valoresInterpretados = new LinkedList<>();
-    
-    for (Instruccion valor : valores) {
-        var valorInterpretado = valor.interpretar(arbol, tabla);
-        if (valorInterpretado instanceof Errores) {
-            return valorInterpretado;
-        }
+    public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
+        LinkedList<Object> valoresInterpretados = new LinkedList<>();
+        
         if (this.dimensiones == 1) {
-            // Manejo de vectores de 1 dimensión
-            if (valor.tipo.getTipo() != this.tipo.getTipo()) {
-                return new Errores("SEMANTICO", "Tipos erroneos en vector de 1 dimensión", this.linea, this.col);
-            }
-            valoresInterpretados.add(valorInterpretado);
-        } else if (this.dimensiones == 2) {
-            // Manejo de vectores de 2 dimensiones
-            if (!(valorInterpretado instanceof LinkedList)) {
-                return new Errores("SEMANTICO", "Se esperaba un vector de 2 dimensiones", this.linea, this.col);
-            }
-            LinkedList<Object> subListaInterpretada = new LinkedList<>();
-            for (Object elem : (LinkedList<?>) valorInterpretado) {
-                if (!(elem instanceof Instruccion)) {
-                    return new Errores("SEMANTICO", "Tipos Erroneos en vector de 2 dimensiones", this.linea, this.col);
+            for (Instruccion instruccionValor : valores) {
+                Object valorInterpretado = instruccionValor.interpretar(arbol, tabla);
+                if (valorInterpretado instanceof Errores) {
+                    return valorInterpretado;
                 }
-                var elemInterpretado = ((Instruccion) elem).interpretar(arbol, tabla);
-                if (elemInterpretado instanceof Errores) {
-                    return elemInterpretado;
+                if (instruccionValor.tipo.getTipo() != this.tipo.getTipo()) {
+                    return new Errores("SEMANTICO", "Tipos erróneos en vector de 1 dimensión", this.linea, this.col);
                 }
-                if (((Instruccion) elem).tipo.getTipo() != this.tipo.getTipo()) {
-                    return new Errores("SEMANTICO", "Tipos Erroneos en vector de 2 dimensiones", this.linea, this.col);
-                }
-                subListaInterpretada.add(elemInterpretado);
+                valoresInterpretados.add(valorInterpretado);
             }
-            valoresInterpretados.add(subListaInterpretada);
+        } 
+
+        Simbolo s = new Simbolo(this.tipo, this.identificador, valoresInterpretados);
+        if (mutabilidad.toLowerCase().equals("const")) {
+            s.setMutabilidad(true);
         }
+        
+        boolean creacion = tabla.setVariable(s);
+        if (!creacion) {
+            return new Errores("SEMANTICO", "Vector ya existente", this.linea, this.col);
+        }
+        
+        return null;
     }
-    Simbolo s = new Simbolo(this.tipo, this.identificador, valoresInterpretados);
-    if (mutabilidad.toLowerCase().equals("const")) {
-        s.setMutabilidad(true);
-    }
-    
-    boolean creacion = tabla.setVariable(s);
-    if (!creacion) {
-        return new Errores("SEMANTICO", "Vector ya existente", this.linea, this.col);
-    }
-    
-    return null;
-}
     
 }

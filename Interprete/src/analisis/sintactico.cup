@@ -79,7 +79,6 @@ nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
 nonterminal LinkedList<Instruccion> LISTA_VALORES;
-nonterminal LinkedList<LinkedList<Instruccion>> LISTA_VALORES_2D;
 
 precedence left OR;
 precedence left AND;
@@ -121,18 +120,11 @@ DECLARACION ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
 
 DECLARACION_VEC ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTA_VALORES:valores CORCHETE2 FINCADENA
                     {: RESULT = new DeclaracionVec(m, b, valores, 1, a, aleft, aright); :}
-                | MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTA_VALORES_2D:valores2d CORCHETE2 FINCADENA
-                    {: LinkedList<Instruccion> flattenedList = new LinkedList<>(); for (LinkedList<Instruccion> list : valores2d) { flattenedList.addAll(list); } RESULT = new DeclaracionVec(m, b, flattenedList, 2, a, aleft, aright); :}
 ;  
 
 LISTA_VALORES ::= LISTA_VALORES:lista COMA EXPRESION:exp {: lista.add(exp); RESULT = lista; :}
                 | EXPRESION:exp                         {: RESULT = new LinkedList<>(); RESULT.add(exp); :}
 ;
-
-LISTA_VALORES_2D ::= LISTA_VALORES_2D:lista2d COMA CORCHETE1 LISTA_VALORES:lista CORCHETE2 {: lista2d.add(lista); RESULT = lista2d; :}
-                   | CORCHETE1 LISTA_VALORES:lista CORCHETE2                             {: RESULT = new LinkedList<>(); RESULT.add(lista); :}
-;
-
 
 MUTABILIDAD ::= CONST     {:  RESULT = "CONST";  :}
                 | VAR      {:  RESULT = "VAR";  :}
