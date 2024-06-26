@@ -20,6 +20,7 @@ import instrucciones.Continue;
 import instrucciones.While;
 import instrucciones.DoWhile;
 import instrucciones.DeclaracionVec;
+import instrucciones.AsignacionVec;
 
 // Expresiones
 import expresiones.Nativo;
@@ -69,7 +70,7 @@ terminal OR, AND, XOR ,NOT;
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
-nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION, DECLARACION_VEC;
+nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION, DECLARACION_VEC, ASIGNACION_VEC;
 nonterminal Instruccion SIF;
 nonterminal Instruccion SWHILE;
 nonterminal Instruccion SDO_WHILE;
@@ -104,6 +105,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | DECLARACION:a     {:  RESULT = a;  :}
                 | ASIGNACION:a      {:  RESULT = a;  :}
                 | DECLARACION_VEC:a {:  RESULT = a;  :}
+                | ASIGNACION_VEC:a  {:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
@@ -132,6 +134,9 @@ MUTABILIDAD ::= CONST     {:  RESULT = "CONST";  :}
 ;
 
 ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
+;
+
+ASIGNACION_VEC ::= ID:a CORCHETE1 EXPRESION:b CORCHETE2 IGUAL EXPRESION:c FINCADENA  {:   RESULT=new AsignacionVec(a, b, c, aleft, aright);  :}
 ;
 
 SIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2  {:   RESULT = new If(a, b, aleft, aright);   :}
