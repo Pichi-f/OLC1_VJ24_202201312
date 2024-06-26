@@ -30,6 +30,7 @@ import expresiones.OperadoresRelacionales;
 import expresiones.AccesoVar;
 import expresiones.Logicos;
 import expresiones.OperadoresLogicos;
+import expresiones.AccesoVec;
 
 // Parser
 parser code
@@ -185,5 +186,6 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | TRUE:a        {:   RESULT = new Nativo(true, new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
             | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
             | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
+            | ID:a CORCHETE1 EXPRESION:b CORCHETE2  {:  RESULT = new AccesoVec(a, b, aleft, aright);  :}
             | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
 ;
