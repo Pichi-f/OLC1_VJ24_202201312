@@ -45,7 +45,6 @@ public class Remove extends Instruccion {
             return new Errores("SEMANTICO", "Índice fuera de los límites de la lista.", this.linea, this.col);
         }
 
-        // Eliminar el elemento en el índice especificado y retornarlo
         Object elementoEliminado = lista.remove(indice);
         return elementoEliminado;
     }

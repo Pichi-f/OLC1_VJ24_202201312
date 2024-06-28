@@ -42,6 +42,7 @@ public class sym {
   public static final int MAYORIGUAL = 45;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
+  public static final int STARTWITH = 56;
   public static final int TRUE = 28;
   public static final int NEW = 35;
   public static final int error = 1;
@@ -51,6 +52,7 @@ public class sym {
   public static final int MENOS = 16;
   public static final int MENOR = 42;
   public static final int BREAK = 46;
+  public static final int VOID = 55;
   public static final int MAYOR = 43;
   public static final int POTENCIA = 20;
   public static final int PUNTO = 53;
@@ -118,7 +120,9 @@ public class sym {
   "NOT",
   "APPEND",
   "PUNTO",
-  "REMOVE"
+  "REMOVE",
+  "VOID",
+  "STARTWITH"
   };
 }
 

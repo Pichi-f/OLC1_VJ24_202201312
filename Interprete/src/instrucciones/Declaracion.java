@@ -28,6 +28,18 @@ public class Declaracion extends Instruccion{
         this.valor = valor;
     }
 
+    public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
+        super(tipo, linea, col);
+        this.identificador = identificador;
+        this.valor = null;
+    }
+
+    public Declaracion(String identificador, Tipo tipo, int linea, int col) {
+        super(tipo, linea, col);
+        this.identificador = identificador;
+    }
+    
+
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         // Interpretar la expresión

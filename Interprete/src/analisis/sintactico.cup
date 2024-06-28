@@ -7,6 +7,7 @@ import abstracto.Instruccion;
 import simbolo.Tipo;
 import simbolo.tipoDato;
 import excepciones.Errores;
+import java.util.HashMap;
 
 
 // Instrucciones
@@ -24,6 +25,8 @@ import instrucciones.AsignacionVec;
 import instrucciones.DeclaracionList;
 import instrucciones.Append;
 import instrucciones.Remove;
+import instrucciones.Metodo;
+import instrucciones.StartWith;
 
 // Expresiones
 import expresiones.Nativo;
@@ -71,6 +74,7 @@ terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK, CONTINUE;
 terminal OR, AND, XOR ,NOT;
 terminal APPEND, PUNTO, REMOVE;
+terminal VOID, STARTWITH;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -88,6 +92,10 @@ nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
 nonterminal LinkedList<Instruccion> LISTA_VALORES;
+nonterminal Instruccion METODO;
+nonterminal LinkedList<HashMap> PARAMS;
+nonterminal Instruccion STARTWITHH;
+nonterminal LinkedList<Instruccion> PARAMSCALL;
 
 precedence left OR;
 precedence left AND;
@@ -120,6 +128,8 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | CONTINUEE:a       {:   RESULT=a;   :}
                 | SDO_WHILE:a       {:   RESULT=a;   :}
                 | SWHILE:a          {:   RESULT=a;   :}
+                | METODO:a          {:   RESULT=a;   :}
+                | STARTWITHH:a      {:   RESULT=a;   :}
                 | APPENDD:a         {:   RESULT=a;   :}
                 | REMOVEE:a         {:   RESULT=a;   :}
                 | error FINCADENA  
@@ -150,6 +160,37 @@ ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a
 ;
 
 ASIGNACION_VEC ::= ID:a CORCHETE1 EXPRESION:b CORCHETE2 IGUAL EXPRESION:c FINCADENA  {:   RESULT=new AsignacionVec(a, b, c, aleft, aright);  :}
+;
+
+METODO ::= TIPOS:a ID:b PAR1 PARAMS:p PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2    {:   RESULT= new Metodo(b, p, c, a, aleft, aright );   :}
+        |  TIPOS:a ID:b PAR1 PAR2 LLAVE1 INSTRUCCIONES:c LLAVE2             {:   RESULT= new Metodo(b, new LinkedList<HashMap>(), c, a, aleft, aright );   :}
+;
+
+PARAMS ::= PARAMS:a COMA TIPOS:b ID:c   {:  
+                                            RESULT = a;
+                                            var hm2= new HashMap<String, Object>();
+                                            hm2.put("id", c);
+                                            hm2.put("tipo", b);
+                                            RESULT.add(hm2);
+                                        :}
+        | TIPOS:a ID:b                  {:  RESULT = new LinkedList<HashMap>(); 
+                                            var hm = new HashMap<String, Object>();
+                                            hm.put("id",b);
+                                            hm.put("tipo", a);
+                                            RESULT.add(hm);
+                                        :}
+;
+
+STARTWITHH ::= STARTWITH ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA  {:   RESULT = new StartWith(a, b, aleft, aright);   :}
+            | STARTWITH ID:a PAR1 PAR2 FINCADENA  {:   RESULT = new StartWith(a, new LinkedList<Instruccion>(), aleft, aright);   :}
+;
+
+PARAMSCALL ::= PARAMSCALL:a COMA EXPRESION:e    {:  RESULT = a;
+                                                    RESULT.add(e);
+                                                :}
+            | EXPRESION:a                       {:  RESULT = new LinkedList<Instruccion>(); 
+                                                    RESULT.add(a);
+                                                :}
 ;
 
 SIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2  {:   RESULT = new If(a, b, aleft, aright);   :}
@@ -184,6 +225,7 @@ TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
         | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
         | CHAR    {:  RESULT = new Tipo(tipoDato.CARACTER);  :}
         | BOOL    {:  RESULT = new Tipo(tipoDato.BOOLEANO);  :}
+        | VOID    {:  RESULT = new Tipo(tipoDato.VOID);  :}
 ;
 
 EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS

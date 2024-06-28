@@ -4,6 +4,10 @@ import abstracto.Instruccion;
 import analisis.parser;
 import analisis.scanner;
 import excepciones.Errores;
+import instrucciones.AsignacionVar;
+import instrucciones.Declaracion;
+import instrucciones.Metodo;
+import instrucciones.StartWith;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -115,27 +119,65 @@ public class Main {
                         scanner s = new scanner(new BufferedReader(new StringReader(texto)));
                         parser p = new parser(s);
                         var resultado = p.parse();
+                        
                         var ast = new Arbol((LinkedList<Instruccion>) resultado.value);
                         var tabla = new tablaSimbolos();
                         tabla.setNombre("GLOBAL");
                         ast.setConsola("");
+                        ast.setTablaGlobal(tabla);
 
                         LinkedList<Errores> lista = new LinkedList<>();
                         lista.addAll(s.listaErrores);
                         lista.addAll(p.listaErrores);
+                        
+                        //almacenar funciones, metodos o structs
                         for (var a : ast.getInstrucciones()) {
                             if (a == null) {
                                 continue;
                             }
-                            var res = a.interpretar(ast, tabla);
-                            if (res instanceof Errores) {
-                                lista.add((Errores) res);
+
+                            if (a instanceof Metodo) {
+                                ast.addFunciones(a);
                             }
                         }
+
+                        //declaraciones o asignaciones globales
+                        for (var a : ast.getInstrucciones()) {
+                            if (a == null) {
+                                continue;
+                            }
+
+                            if (a instanceof Declaracion || a instanceof AsignacionVar) {
+                                var res = a.interpretar(ast, tabla);
+                                if (res instanceof Errores errores) {
+                                    lista.add(errores);
+                                }
+                            }
+
+                        }
+
+                        //execute -> start_with
+                        StartWith b = null;
+                        for (var a : ast.getInstrucciones()) {
+                            if (a == null) {
+                                continue;
+                            }
+                            if (a instanceof StartWith startWith) {
+                                b = startWith;
+                                break;
+                            }
+                        }
+
+                        var resultadoExecute = b.interpretar(ast, tabla);
+                        if (resultadoExecute instanceof Errores) {
+                            System.out.println("Ya no sale compi1");
+                        }
+                        
                         textArea2.setText(ast.getConsola());
                         for (var i : lista) {
                             textArea2.append(i.toString() + "\n");
                         }
+                        
                     } catch (Exception ex) {
                         textArea2.setText("Algo salió mal\n" + ex.toString());
                     }

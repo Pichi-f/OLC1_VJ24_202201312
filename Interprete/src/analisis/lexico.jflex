@@ -85,6 +85,8 @@ LIST = "list"
 NEW = "new"
 APPEND = "append"
 REMOVE = "remove"
+VOID = "void"
+STARTWITH = "start_with"
 
 
 %%
@@ -105,6 +107,8 @@ REMOVE = "remove"
 <YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
 <YYINITIAL> {APPEND} {return new Symbol(sym.APPEND, yyline, yycolumn,yytext());}
 <YYINITIAL> {REMOVE} {return new Symbol(sym.REMOVE, yyline, yycolumn,yytext());}
+<YYINITIAL> {VOID} {return new Symbol(sym.VOID, yyline, yycolumn,yytext());}
+<YYINITIAL> {STARTWITH} {return new Symbol(sym.STARTWITH, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
