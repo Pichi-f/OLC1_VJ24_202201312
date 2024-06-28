@@ -52,12 +52,13 @@ public class AsignacionVec extends Instruccion{
         if (indice < 0 || indice >= vectorList.size()) {
             return new Errores("SEMANTICA", "Índice fuera de los límites del vector.", this.linea, this.col);
         }
+        if (!vectorList.isEmpty() && vectorList.get(0).getClass() != nuevoValor.getClass()) {
+            return new Errores("SEMANTICA", "El tipo del valor no coincide con el tipo de los elementos del vector", this.linea, this.col);
+        }
 
-        // asigna el nuevo valor
         vectorList.set(indice, nuevoValor);
 
         return null;
     }
-    
     
 }

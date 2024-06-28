@@ -30,26 +30,24 @@ public class Append extends Instruccion{
 
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
-        // Paso 1: Buscar el símbolo en la tabla de símbolos
+        // buscamos el simbolo en la tabla de símbolos
         Simbolo simboloLista = tabla.getVariable(identificador);
         if (simboloLista == null || !(simboloLista.getValor() instanceof LinkedList)) {
-            return new Errores("SEMANTICO", "La variable '" + identificador + "' no es una lista o no existe.", linea, col);
+            return new Errores("SEMANTICO", "La variable '" + identificador + "' no es una lista o no existe.", this.linea, this.col);
         }
         
-        // Paso 2: Verificar que el símbolo es de tipo lista (esto ya se verifica al comprobar que el valor es una instancia de LinkedList)
-        
-        // Paso 3: Evaluar la expresión para obtener el valor a agregar
         Object valorAgregar = valor.interpretar(arbol, tabla);
         if (valorAgregar instanceof Errores) {
-            return valorAgregar; // Propagar el error si la evaluación de la expresión falla
+            return valorAgregar;
         }
         
-        // Paso 4: Agregar el valor al final de la lista
-        @SuppressWarnings("unchecked")
+        // se verifica el tipo
         LinkedList<Object> lista = (LinkedList<Object>) simboloLista.getValor();
+        if (!lista.isEmpty() && valorAgregar.getClass() != lista.getFirst().getClass()) {
+            return new Errores("SEMANTICO", "El tipo de dato del valor a agregar no coincide con el tipo de dato de los elementos de la lista.", this.linea, this.col);
+        }
         lista.add(valorAgregar);
         
-        // Paso 5: Retornar null ya que la operación es de tipo VOID
         return null;
     }
     
