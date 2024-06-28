@@ -21,6 +21,7 @@ import instrucciones.While;
 import instrucciones.DoWhile;
 import instrucciones.DeclaracionVec;
 import instrucciones.AsignacionVec;
+import instrucciones.DeclaracionList;
 
 // Expresiones
 import expresiones.Nativo;
@@ -62,6 +63,7 @@ terminal PAR1, PAR2, MAS, MENOS, UMENOS, MULTIPLICACION, DIVISION, POTENCIA, MOD
 terminal IGUAL, EQUALS, DIFERENTE; 
 terminal String CONST, VAR;
 terminal TRUE, FALSE, IF, BOOL, WHILE, DO;
+terminal LIST, NEW;
 terminal LLAVE1, LLAVE2, CORCHETE1, CORCHETE2, COMA;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK, CONTINUE;
@@ -71,6 +73,7 @@ terminal OR, AND, XOR ,NOT;
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION;
 nonterminal Instruccion IMPRESION, DECLARACION, ASIGNACION, DECLARACION_VEC, ASIGNACION_VEC;
+nonterminal Instruccion DECLARACION_LIST;
 nonterminal Instruccion SIF;
 nonterminal Instruccion SWHILE;
 nonterminal Instruccion SDO_WHILE;
@@ -106,6 +109,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | ASIGNACION:a      {:  RESULT = a;  :}
                 | DECLARACION_VEC:a {:  RESULT = a;  :}
                 | ASIGNACION_VEC:a  {:  RESULT = a;  :}
+                | DECLARACION_LIST:a{:  RESULT = a;  :}
                 | SIF:a             {:   RESULT=a;   :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
@@ -123,7 +127,10 @@ DECLARACION ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA
 
 DECLARACION_VEC ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTA_VALORES:valores CORCHETE2 FINCADENA
                     {: RESULT = new DeclaracionVec(m, b, valores, 1, a, aleft, aright); :}
-;  
+;
+
+DECLARACION_LIST ::= LIST MENOR TIPOS:a MAYOR ID:b IGUAL NEW LIST PAR1 PAR2 FINCADENA       {: RESULT = new DeclaracionList(b, a, aleft, aright); :}
+;
 
 LISTA_VALORES ::= LISTA_VALORES:lista COMA EXPRESION:exp {: lista.add(exp); RESULT = lista; :}
                 | EXPRESION:exp                         {: RESULT = new LinkedList<>(); RESULT.add(exp); :}

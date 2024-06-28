@@ -80,6 +80,8 @@ BREAK = "break"
 CONTINUE = "continue"
 WHILE = "while"
 DO = "do"
+LIST = "list"
+NEW = "new"
 
 
 %%
@@ -96,6 +98,8 @@ DO = "do"
 <YYINITIAL> {CONTINUE} {return new Symbol(sym.CONTINUE, yyline, yycolumn,yytext());}
 <YYINITIAL> {WHILE} {return new Symbol(sym.WHILE, yyline, yycolumn,yytext());}
 <YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
+<YYINITIAL> {LIST} {return new Symbol(sym.LIST, yyline, yycolumn,yytext());}
+<YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
