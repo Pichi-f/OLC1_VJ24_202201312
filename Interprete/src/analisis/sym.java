@@ -13,6 +13,7 @@ public class sym {
   public static final int PAR1 = 13;
   public static final int CONST = 26;
   public static final int CHAR = 12;
+  public static final int REMOVE = 54;
   public static final int LLAVE2 = 37;
   public static final int EQUALS = 24;
   public static final int LLAVE1 = 36;
@@ -116,7 +117,8 @@ public class sym {
   "XOR",
   "NOT",
   "APPEND",
-  "PUNTO"
+  "PUNTO",
+  "REMOVE"
   };
 }
 

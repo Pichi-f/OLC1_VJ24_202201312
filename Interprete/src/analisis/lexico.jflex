@@ -84,6 +84,7 @@ DO = "do"
 LIST = "list"
 NEW = "new"
 APPEND = "append"
+REMOVE = "remove"
 
 
 %%
@@ -103,6 +104,7 @@ APPEND = "append"
 <YYINITIAL> {LIST} {return new Symbol(sym.LIST, yyline, yycolumn,yytext());}
 <YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
 <YYINITIAL> {APPEND} {return new Symbol(sym.APPEND, yyline, yycolumn,yytext());}
+<YYINITIAL> {REMOVE} {return new Symbol(sym.REMOVE, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
