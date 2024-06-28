@@ -28,6 +28,7 @@ public class sym {
   public static final int AND = 49;
   public static final int MENORIGUAL = 44;
   public static final int FINCADENA = 7;
+  public static final int APPEND = 52;
   public static final int IGUAL = 23;
   public static final int CARACTER = 6;
   public static final int OR = 48;
@@ -51,6 +52,7 @@ public class sym {
   public static final int BREAK = 46;
   public static final int MAYOR = 43;
   public static final int POTENCIA = 20;
+  public static final int PUNTO = 53;
   public static final int WHILE = 32;
   public static final int LIST = 34;
   public static final int STRING = 11;
@@ -112,7 +114,9 @@ public class sym {
   "OR",
   "AND",
   "XOR",
-  "NOT"
+  "NOT",
+  "APPEND",
+  "PUNTO"
   };
 }
 

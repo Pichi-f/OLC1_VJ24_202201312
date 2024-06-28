@@ -43,6 +43,7 @@ DIFERENTE = "!="
 FINCADENA = ";"
 DOSPUNTOS = ":"
 COMA = ","
+PUNTO = "."
 LLAVE1 = "{"
 LLAVE2 = "}"
 CORCHETE1 = "["
@@ -82,6 +83,7 @@ WHILE = "while"
 DO = "do"
 LIST = "list"
 NEW = "new"
+APPEND = "append"
 
 
 %%
@@ -100,6 +102,7 @@ NEW = "new"
 <YYINITIAL> {DO} {return new Symbol(sym.DO, yyline, yycolumn,yytext());}
 <YYINITIAL> {LIST} {return new Symbol(sym.LIST, yyline, yycolumn,yytext());}
 <YYINITIAL> {NEW} {return new Symbol(sym.NEW, yyline, yycolumn,yytext());}
+<YYINITIAL> {APPEND} {return new Symbol(sym.APPEND, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
@@ -144,6 +147,7 @@ NEW = "new"
 <YYINITIAL> {NOT} { return new Symbol(sym.NOT, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOSPUNTOS} { return new Symbol(sym.DOSPUNTOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {COMA} { return new Symbol(sym.COMA, yyline, yycolumn, yytext()); }
+<YYINITIAL> {PUNTO} { return new Symbol(sym.PUNTO, yyline, yycolumn, yytext()); }
 
 <YYINITIAL> {BLANCOS} { }
 <YYINITIAL> {COMSIM} { }

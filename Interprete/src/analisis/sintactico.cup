@@ -22,6 +22,7 @@ import instrucciones.DoWhile;
 import instrucciones.DeclaracionVec;
 import instrucciones.AsignacionVec;
 import instrucciones.DeclaracionList;
+import instrucciones.Append;
 
 // Expresiones
 import expresiones.Nativo;
@@ -68,6 +69,7 @@ terminal LLAVE1, LLAVE2, CORCHETE1, CORCHETE2, COMA;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
 terminal String BREAK, CONTINUE;
 terminal OR, AND, XOR ,NOT;
+terminal APPEND, PUNTO;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -80,6 +82,7 @@ nonterminal Instruccion SDO_WHILE;
 nonterminal Instruccion CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion BREAKK;
 nonterminal Instruccion CONTINUEE;
+nonterminal Instruccion APPENDD;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
@@ -116,6 +119,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | CONTINUEE:a       {:   RESULT=a;   :}
                 | SDO_WHILE:a       {:   RESULT=a;   :}
                 | SWHILE:a          {:   RESULT=a;   :}
+                | APPENDD:a         {:   RESULT=a;   :}
                 | error FINCADENA  
 ;
 
@@ -165,6 +169,9 @@ SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RE
 ;
 
 SDO_WHILE ::= DO LLAVE1 INSTRUCCIONES:a LLAVE2 WHILE PAR1 EXPRESION:b PAR2 FINCADENA     {:   RESULT = new DoWhile(b, a, aleft, aright);   :}
+;
+
+APPENDD ::= ID:a PUNTO APPEND PAR1 EXPRESION:b PAR2 FINCADENA  {:   RESULT = new Append(a, b, aleft, aright);   :}
 ;
 
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
