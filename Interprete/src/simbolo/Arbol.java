@@ -77,6 +77,7 @@ public class Arbol {
 
     public void addFunciones(Instruccion funcion) {
         this.funciones.add(funcion);
+        //validar si se puede o no
     }
 
     public Instruccion getFuncion(String id) {

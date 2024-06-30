@@ -10,6 +10,7 @@ import simbolo.Arbol;
 import simbolo.Simbolo;
 import simbolo.Tipo;
 import simbolo.tablaSimbolos;
+import simbolo.tipoDato;
 
 /**
  *
@@ -28,30 +29,21 @@ public class Declaracion extends Instruccion{
         this.valor = valor;
     }
 
-    public Declaracion(String identificador, Instruccion valor, Tipo tipo, int linea, int col) {
-        super(tipo, linea, col);
-        this.identificador = identificador;
-        this.valor = null;
-    }
-
-    public Declaracion(String identificador, Tipo tipo, int linea, int col) {
-        super(tipo, linea, col);
-        this.identificador = identificador;
-    }
-    
-
     @Override
     public Object interpretar(Arbol arbol, tablaSimbolos tabla) {
         // Interpretar la expresión
-        var valorInterpretado = this.valor.interpretar(arbol, tabla); 
+        var valorInterpretado = (this.valor == null) ? this.valoresDefault() : this.valor.interpretar(arbol, tabla);
         // Se valida si es error
         if (valorInterpretado instanceof Errores){
             return valorInterpretado;
         }
         // Se valida el tipo
-        if (this.valor.tipo.getTipo() != this.tipo.getTipo()){
-            return new Errores("SEMANTICO", "Tipos Erroneos", this.linea, this.col);
+        if (this.valor != null){
+            if (this.valor.tipo.getTipo() != this.tipo.getTipo()){
+                return new Errores("SEMANTICO", "Tipos Erroneos", this.linea, this.col);
+            }
         }
+        
         //Se crea el simbolo
         Simbolo s = new Simbolo(this.tipo, this.identificador, valorInterpretado);
         if (mutabilidad.toLowerCase().equals("const")){
@@ -67,5 +59,20 @@ public class Declaracion extends Instruccion{
         return null;
     }
     
-    
+    public Object valoresDefault() {
+        return switch (this.tipo.getTipo()) {
+            case tipoDato.BOOLEANO ->
+                true;
+            case tipoDato.CADENA ->
+                "";
+            case tipoDato.CARACTER ->
+                '\u0000';
+            case tipoDato.ENTERO ->
+                0;
+            case tipoDato.DECIMAL ->
+                0.0;
+            default ->
+                null;
+        };
+    }
 }

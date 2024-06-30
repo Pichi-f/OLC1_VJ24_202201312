@@ -45,18 +45,12 @@ public class StartWith extends Instruccion {
                         this.linea, this.col);
             }
 
-            /*
-                Usamos un ciclo con index para que los parametros coincidan
-                tanto en la lista de la clase metodos como en la lista de esta
-                clase (Execute)
-             */
-            //declaramos los parametros del execute
             for (int i = 0; i < this.parametros.size(); i++) {
                 var identificador = (String) metodo.parametros.get(i).get("id");
                 var valor = this.parametros.get(i);
                 var tipo2 = (Tipo) metodo.parametros.get(i).get("tipo");
 
-                var declaracionParametro = new Declaracion(
+                var declaracionParametro = new Declaracion("const", 
                         identificador, valor, tipo2, this.linea, this.col);
 
                 var resultadoDeclaracion = declaracionParametro.interpretar(arbol, newTabla);
