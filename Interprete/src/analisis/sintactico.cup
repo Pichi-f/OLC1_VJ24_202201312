@@ -27,6 +27,7 @@ import instrucciones.Append;
 import instrucciones.Remove;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
+import instrucciones.Llamada;
 
 // Expresiones
 import expresiones.Nativo;
@@ -96,6 +97,7 @@ nonterminal Instruccion METODO;
 nonterminal LinkedList<HashMap> PARAMS;
 nonterminal Instruccion STARTWITHH;
 nonterminal LinkedList<Instruccion> PARAMSCALL;
+nonterminal Instruccion LLAMADA;
 
 precedence left OR;
 precedence left AND;
@@ -130,6 +132,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | SWHILE:a          {:   RESULT=a;   :}
                 | METODO:a          {:   RESULT=a;   :}
                 | STARTWITHH:a      {:   RESULT=a;   :}
+                | LLAMADA:a         {:   RESULT=a;   :}
                 | APPENDD:a         {:   RESULT=a;   :}
                 | REMOVEE:a         {:   RESULT=a;   :}
                 | error FINCADENA  
@@ -185,6 +188,9 @@ STARTWITHH ::= STARTWITH ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA  {:   RESULT = ne
             | STARTWITH ID:a PAR1 PAR2 FINCADENA  {:   RESULT = new StartWith(a, new LinkedList<Instruccion>(), aleft, aright);   :}
 ;
 
+LLAMADA ::= ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA               {:  RESULT= new Llamada(a, b, aleft, aright);    :}
+          | ID:a PAR1 PAR2 FINCADENA                            {:  RESULT= new Llamada(a, new LinkedList<Instruccion>(), aleft, aright);    :}    
+;
 
 PARAMSCALL ::= PARAMSCALL:a COMA EXPRESION:e    {:  RESULT = a;
                                                     RESULT.add(e);
