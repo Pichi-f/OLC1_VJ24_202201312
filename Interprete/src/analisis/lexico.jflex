@@ -88,6 +88,7 @@ REMOVE = "remove"
 VOID = "void"
 STARTWITH = "start_with"
 RETURN = "return"
+LENGHT = "length"
 
 
 %%
@@ -111,6 +112,7 @@ RETURN = "return"
 <YYINITIAL> {VOID} {return new Symbol(sym.VOID, yyline, yycolumn,yytext());}
 <YYINITIAL> {STARTWITH} {return new Symbol(sym.STARTWITH, yyline, yycolumn,yytext());}
 <YYINITIAL> {RETURN} {return new Symbol(sym.RETURN, yyline, yycolumn,yytext());}
+<YYINITIAL> {LENGHT} {return new Symbol(sym.LENGHT, yyline, yycolumn,yytext());}
 
 //PALABRAS RESERVADAS
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }

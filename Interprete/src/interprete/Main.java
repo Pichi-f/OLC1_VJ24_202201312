@@ -5,7 +5,10 @@ import analisis.parser;
 import analisis.scanner;
 import excepciones.Errores;
 import instrucciones.AsignacionVar;
+import instrucciones.AsignacionVec;
 import instrucciones.Declaracion;
+import instrucciones.DeclaracionList;
+import instrucciones.DeclaracionVec;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
 import javax.swing.*;
@@ -147,7 +150,9 @@ public class Main {
                                 continue;
                             }
 
-                            if (a instanceof Declaracion || a instanceof AsignacionVar) {
+                            if (a instanceof Declaracion || a instanceof AsignacionVar
+                                    || a instanceof AsignacionVec || a instanceof DeclaracionVec
+                                    || a instanceof DeclaracionList) {
                                 var res = a.interpretar(ast, tabla);
                                 if (res instanceof Errores errores) {
                                     lista.add(errores);
@@ -194,14 +199,44 @@ public class Main {
                     JPanel panel2 = (JPanel) splitPane.getBottomComponent();
                     JScrollPane scrollPane2 = (JScrollPane) panel2.getComponent(1);
                     JTextArea textArea2 = (JTextArea) scrollPane2.getViewport().getView();
-                    
+
                     try {
                         String errores = textArea2.getText();
                         if (!errores.isEmpty()) {
-                            String htmlContent = "<html><head><title>Reporte de Errores</title></head><body>";
-                            htmlContent += "<h1>Reporte de Errores</h1><pre>" + errores + "</pre></body></html>";
+                            String[] erroresArray = errores.split("\n");
 
-                            Files.write(Paths.get("reporteErrores.html"), htmlContent.getBytes());
+                            StringBuilder htmlContent = new StringBuilder("<html><head><title>Reporte de Errores</title></head><body>");
+                            htmlContent.append("<h1>Reporte de Errores</h1>");
+                            htmlContent.append("<table border='1'><tr><th>#</th><th>Tipo</th><th>Descripción</th><th>Línea</th><th>Columna</th></tr>");
+
+                            int contador = 1;
+
+                            for (String error : erroresArray) {
+                                if (error.startsWith("Errores")) {
+                                    int startIndex = error.indexOf("{");
+                                    int endIndex = error.indexOf("}");
+                                    if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
+                                        String contenido = error.substring(startIndex + 1, endIndex);
+                                        String[] partes = contenido.split(",\\s*");
+                                        if (partes.length == 4) {
+                                            String tipo = partes[0].replace("tipo=", "").trim();
+                                            String descripcion = partes[1].replace("desc=", "").trim();
+                                            String linea = partes[2].replace("linea=", "").trim();
+                                            String columna = partes[3].replace("col=", "").trim();
+                                            htmlContent.append("<tr><td>").append(contador).append("</td>")
+                                                        .append("<td>").append(tipo).append("</td>")
+                                                        .append("<td>").append(descripcion).append("</td>")
+                                                        .append("<td>").append(linea).append("</td>")
+                                                        .append("<td>").append(columna).append("</td></tr>");
+                                            contador++;
+                                        }
+                                    }
+                                }
+                            }
+
+                            htmlContent.append("</table></body></html>");
+
+                            Files.write(Paths.get("reporteErrores.html"), htmlContent.toString().getBytes());
 
                             JOptionPane.showMessageDialog(frame, "Reporte generado exitosamente.", "Reporte", JOptionPane.INFORMATION_MESSAGE);
                         } else {
@@ -223,3 +258,4 @@ public class Main {
         frame.setVisible(true);
     }
 }
+

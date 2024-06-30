@@ -29,6 +29,7 @@ import instrucciones.Metodo;
 import instrucciones.StartWith;
 import instrucciones.Llamada;
 import instrucciones.Return;
+import instrucciones.Length;
 
 // Expresiones
 import expresiones.Nativo;
@@ -77,6 +78,7 @@ terminal String BREAK, CONTINUE, RETURN;
 terminal OR, AND, XOR ,NOT;
 terminal APPEND, PUNTO, REMOVE;
 terminal VOID, STARTWITH;
+terminal LENGHT;
 
 // No terminales
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
@@ -91,6 +93,7 @@ nonterminal Instruccion BREAKK;
 nonterminal Instruccion CONTINUEE;
 nonterminal Instruccion RETURNN;
 nonterminal Instruccion APPENDD, REMOVEE;
+nonterminal Instruccion LENGHTT;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
 nonterminal String MUTABILIDAD;
@@ -139,6 +142,7 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | LLAMADA:a FINCADENA        {:   RESULT=a;   :}
                 | APPENDD:a         {:   RESULT=a;   :}
                 | REMOVEE:a         {:   RESULT=a;   :}
+                | LENGHTT:a         {:   RESULT=a;   :}
                 | error FINCADENA  
 ;
 
@@ -235,6 +239,9 @@ APPENDD ::= ID:a PUNTO APPEND PAR1 EXPRESION:b PAR2 FINCADENA  {:   RESULT = new
 REMOVEE ::= ID:a PUNTO REMOVE PAR1 EXPRESION:b PAR2 FINCADENA  {:   RESULT = new Remove(a, b, aleft, aright);   :}
 ;
 
+LENGHTT ::= LENGHT PAR1 EXPRESION:a PAR2  {:   RESULT = new Length(a, aleft, aright);   :}
+;
+
 TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
         | DOUBLE  {:  RESULT = new Tipo(tipoDato.DECIMAL);  :}
         | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
@@ -261,6 +268,7 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | EXPRESION:a AND EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);  :}%prec AND
             | EXPRESION:a OR EXPRESION:b        {:  RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);  :}%prec OR
             | LLAMADA:a                         {:  RESULT = a;  :}
+            | LENGHTT:a                         {:  RESULT = a;  :}
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}

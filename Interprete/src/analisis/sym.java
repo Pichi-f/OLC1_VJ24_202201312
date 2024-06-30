@@ -57,6 +57,7 @@ public class sym {
   public static final int MAYOR = 43;
   public static final int POTENCIA = 20;
   public static final int PUNTO = 54;
+  public static final int LENGHT = 58;
   public static final int WHILE = 32;
   public static final int LIST = 34;
   public static final int STRING = 11;
@@ -124,7 +125,8 @@ public class sym {
   "PUNTO",
   "REMOVE",
   "VOID",
-  "STARTWITH"
+  "STARTWITH",
+  "LENGHT"
   };
 }
 
