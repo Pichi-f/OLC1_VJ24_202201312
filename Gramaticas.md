@@ -1,126 +1,117 @@
-# GRAMATICAS
+<INICIO> ::= <INSTRUCCIONES>
 
-INICIO ::= INSTRUCCIONES:a    {:  RESULT = a;  :}
-;
+<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>
+                  | <INSTRUCCION>
 
+<INSTRUCCION> ::= <IMPRESION>
+                | <DECLARACION>
+                | <ASIGNACION>
+                | <DECLARACION_VEC>
+                | <ASIGNACION_VEC>
+                | <DECLARACION_LIST>
+                | <SIF>
+                | <CFOR>
+                | <BREAKK>
+                | <CONTINUEE>
+                | <RETURNN>
+                | <SDO_WHILE>
+                | <SWHILE>
+                | <METODO>
+                | <STARTWITHH>
+                | <LLAMADA> FINCADENA
+                | <APPENDD>
+                | <REMOVEE>
+                | <LENGHTT>
+                | error FINCADENA
 
-INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b     {:  RESULT = a; RESULT.add(b);  :}
+<IMPRESION> ::= IMPRIMIR PAR1 <EXPRESION> PAR2 FINCADENA
 
-                | INSTRUCCION:a                     {:  RESULT = new LinkedList<>(); RESULT.add(a);  :}
-;
+<DECLARACION> ::= <MUTABILIDAD> ID DOSPUNTOS <TIPOS> IGUAL <EXPRESION> FINCADENA
 
+<DECLARACION_VEC> ::= <MUTABILIDAD> ID DOSPUNTOS <TIPOS> CORCHETE1 CORCHETE2 IGUAL CORCHETE1 <LISTA_VALORES> CORCHETE2 FINCADENA
 
-INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
+<DECLARACION_LIST> ::= LIST MENOR <TIPOS> MAYOR ID IGUAL NEW LIST PAR1 PAR2 FINCADENA
 
-                | DECLARACION:a     {:  RESULT = a;  :}
+<LISTA_VALORES> ::= <LISTA_VALORES> COMA <EXPRESION>
+                   | <EXPRESION>
 
-                | ASIGNACION:a      {:  RESULT = a;  :}
+<MUTABILIDAD> ::= CONST
+                | VAR
 
-                | SIF:a             {:   RESULT=a;   :}
+<ASIGNACION> ::= ID IGUAL <EXPRESION> FINCADENA
 
-                | CFOR:a            {:   RESULT=a;   :}
+<ASIGNACION_VEC> ::= ID CORCHETE1 <EXPRESION> CORCHETE2 IGUAL <EXPRESION> FINCADENA
 
-                | BREAKK:a          {:   RESULT=a;   :}
+<METODO> ::= <TIPOS> ID PAR1 <PARAMS> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
+           | <TIPOS> ID PAR1 PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
 
-                | SWHILE:a          {:   RESULT=a;   :}
+<PARAMS> ::= <PARAMS> COMA <TIPOS> ID
+           | <TIPOS> ID
 
-                | error FINCADENA  
-;
+<STARTWITHH> ::= STARTWITH ID PAR1 <PARAMSCALL> PAR2 FINCADENA
+               | STARTWITH ID PAR1 PAR2 FINCADENA
 
+<LLAMADA> ::= ID PAR1 <PARAMSCALL> PAR2
+            | ID PAR1 PAR2
 
-IMPRESION ::= IMPRIMIR PAR1 EXPRESION:a PAR2 FINCADENA      {:  RESULT = new Print(a, aleft, aright);  :}
-;
+<PARAMSCALL> ::= <PARAMSCALL> COMA <EXPRESION>
+               | <EXPRESION>
 
+<SIF> ::= IF PAR1 <EXPRESION> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
 
-DECLARACION ::= MUTABILIDAD:m ID:b DOSPUNTOS TIPOS:a IGUAL EXPRESION:c FINCADENA    {:  RESULT = new Declaracion(m, b, c, a, aleft, aright);  :}
-;
+<CFOR> ::= FOR PAR1 <ASIGNACION> <EXPRESION> FINCADENA <ACTUALIZA_FOR> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
 
+<ACTUALIZA_FOR> ::= ID IGUAL <EXPRESION>
 
-MUTABILIDAD ::= CONST     {:  RESULT = "CONST";  :}
-                | VAR      {:  RESULT = "VAR";  :}
-;
+<BREAKK> ::= BREAK FINCADENA
 
+<CONTINUEE> ::= CONTINUE FINCADENA
 
-ASIGNACION ::= ID:a IGUAL EXPRESION:b FINCADENA  {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
-;
+<RETURNN> ::= RETURN <EXPRESION> FINCADENA
+            | RETURN FINCADENA
 
+<SWHILE> ::= WHILE PAR1 <EXPRESION> PAR2 LLAVE1 <INSTRUCCIONES> LLAVE2
 
-SIF ::= IF PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2  {:   RESULT = new If(a, b, aleft, aright);   :}
-;
+<SDO_WHILE> ::= DO LLAVE1 <INSTRUCCIONES> LLAVE2 WHILE PAR1 <EXPRESION> PAR2 FINCADENA
 
+<APPENDD> ::= ID PUNTO APPEND PAR1 <EXPRESION> PAR2 FINCADENA
 
-CFOR ::= FOR PAR1 ASIGNACION:a EXPRESION:b FINCADENA ACTUALIZA_FOR:c PAR2 LLAVE1 INSTRUCCIONES:d LLAVE2     {:   RESULT = new For(a, b, c, d, aleft, aright);   :}
-;
+<REMOVEE> ::= ID PUNTO REMOVE PAR1 <EXPRESION> PAR2 FINCADENA
 
+<LENGHTT> ::= LENGHT PAR1 <EXPRESION> PAR2
 
-ACTUALIZA_FOR ::= ID:a IGUAL EXPRESION:b {:   RESULT=new AsignacionVar(a, b, aleft, aright);  :}
-;
+<TIPOS> ::= INT
+          | DOUBLE
+          | STRING
+          | CHAR
+          | BOOL
+          | VOID
 
-
-BREAKK ::= BREAK:a FINCADENA      {:    RESULT = new Break(aleft, aright);     :}
-;
-
-
-SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RESULT = new While(a, b, aleft, aright);   :}
-;
-
-
-TIPOS ::= INT     {:  RESULT = new Tipo(tipoDato.ENTERO);  :}
-
-        | DOUBLE  {:  RESULT = new Tipo(tipoDato.DECIMAL);  :}
-
-        | STRING  {:  RESULT = new Tipo(tipoDato.CADENA);  :}
-
-        | BOOL    {:  RESULT = new Tipo(tipoDato.BOOLEANO);  :}
-;
-
-EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, OperadoresAritmeticos.NEGACION, aleft, aright);  :} %prec UMENOS
-
-            | EXPRESION:a MODULO EXPRESION:b    {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MODULO, aleft, aright);  :}%prec MODULO
-
-            | EXPRESION:a POTENCIA EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.POTENCIA, aleft, aright);  :}
-
-            | EXPRESION:a DIVISION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.DIVISION, aleft, aright);  :}
-
-            | EXPRESION:a MULTIPLICACION EXPRESION:b  {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.MULTIPLICACION, aleft, aright);  :}
-
-            | EXPRESION:a MAS EXPRESION:b       {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.SUMA, aleft, aright);  :}
-
-            | EXPRESION:a MENOS EXPRESION:b     {:  RESULT = new Aritmeticas(a, b, OperadoresAritmeticos.RESTA, aleft, aright);  :}
-
-            | EXPRESION:a IGUAL IGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.EQUALS, aleft, aright);  :}%prec EQUALS
-
-            | EXPRESION:a DIFERENTE EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.DIFERENTE, aleft, aright);  :}%prec DIFERENTE
-
-            | EXPRESION:a MENORIGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MENORIGUAL, aleft, aright);  :}
-
-            | EXPRESION:a MAYORIGUAL EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYORIGUAL, aleft, aright);  :}
-
-            | EXPRESION:a MENOR EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MENOR, aleft, aright);  :}
-
-            | EXPRESION:a MAYOR EXPRESION:b     {:  RESULT = new Relacionales(a, b, OperadoresRelacionales.MAYOR, aleft, aright);  :}
-
-            | EXPRESION:a OR EXPRESION:b        {:  RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);  :}%prec OR
-
-            | EXPRESION:a AND EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);  :}%prec AND
-
-            | EXPRESION:a XOR EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);  :}%prec XOR
-
-            | NOT EXPRESION:a                    {:  RESULT = new Logicos(a, OperadoresLogicos.NOT, aleft, aright);  :}%prec NOT
-
-            | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
-
-            | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
-
-            | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}
-
-            | CARACTER:a    {:  RESULT = new Nativo(a, new Tipo(tipoDato.CARACTER), aleft, aright);  :}
-
-            | TRUE:a        {:   RESULT = new Nativo(true, new Tipo(tipoDato.BOOLEANO), aleft, aright );   :}
-
-            | FALSE:a       {:   RESULT = new Nativo(false, new Tipo(tipoDato.BOOLEANO), aleft, aright );    :}
-
-            | ID:a          {:  RESULT = new AccesoVar(a, aleft, aright);  :}
-
-            | PAR1 EXPRESION:a PAR2             {:  RESULT = a;  :}
-;
+<EXPRESION> ::= MENOS <EXPRESION> %prec UMENOS
+              | <EXPRESION> POTENCIA <EXPRESION>
+              | <EXPRESION> DIVISION <EXPRESION>
+              | <EXPRESION> MULTIPLICACION <EXPRESION>
+              | <EXPRESION> MODULO <EXPRESION>
+              | <EXPRESION> MAS <EXPRESION>
+              | <EXPRESION> MENOS <EXPRESION>
+              | <EXPRESION> IGUAL IGUAL <EXPRESION>
+              | <EXPRESION> DIFERENTE <EXPRESION>
+              | <EXPRESION> MENORIGUAL <EXPRESION>
+              | <EXPRESION> MAYORIGUAL <EXPRESION>
+              | <EXPRESION> MENOR <EXPRESION>
+              | <EXPRESION> MAYOR <EXPRESION>
+              | NOT <EXPRESION> %prec NOT
+              | <EXPRESION> XOR <EXPRESION> %prec XOR
+              | <EXPRESION> AND <EXPRESION> %prec AND
+              | <EXPRESION> OR <EXPRESION> %prec OR
+              | <LLAMADA>
+              | <LENGHTT>
+              | ENTERO
+              | DECIMAL
+              | CADENA
+              | CARACTER
+              | TRUE
+              | FALSE
+              | ID
+              | ID CORCHETE1 <EXPRESION> CORCHETE2
+              | PAR1 <EXPRESION> PAR2
