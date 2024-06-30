@@ -28,6 +28,7 @@ import instrucciones.Remove;
 import instrucciones.Metodo;
 import instrucciones.StartWith;
 import instrucciones.Llamada;
+import instrucciones.Return;
 
 // Expresiones
 import expresiones.Nativo;
@@ -72,7 +73,7 @@ terminal TRUE, FALSE, IF, BOOL, WHILE, DO;
 terminal LIST, NEW;
 terminal LLAVE1, LLAVE2, CORCHETE1, CORCHETE2, COMA;
 terminal FOR, MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
-terminal String BREAK, CONTINUE;
+terminal String BREAK, CONTINUE, RETURN;
 terminal OR, AND, XOR ,NOT;
 terminal APPEND, PUNTO, REMOVE;
 terminal VOID, STARTWITH;
@@ -88,6 +89,7 @@ nonterminal Instruccion SDO_WHILE;
 nonterminal Instruccion CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion BREAKK;
 nonterminal Instruccion CONTINUEE;
+nonterminal Instruccion RETURNN;
 nonterminal Instruccion APPENDD, REMOVEE;
 nonterminal Tipo TIPOS;
 nonterminal Instruccion EXPRESION;
@@ -98,6 +100,7 @@ nonterminal LinkedList<HashMap> PARAMS;
 nonterminal Instruccion STARTWITHH;
 nonterminal LinkedList<Instruccion> PARAMSCALL;
 nonterminal Instruccion LLAMADA;
+
 
 precedence left OR;
 precedence left AND;
@@ -128,11 +131,12 @@ INSTRUCCION ::= IMPRESION:a         {:  RESULT = a;  :}
                 | CFOR:a            {:   RESULT=a;   :}
                 | BREAKK:a          {:   RESULT=a;   :}
                 | CONTINUEE:a       {:   RESULT=a;   :}
+                | RETURNN:a         {:   RESULT=a;   :}
                 | SDO_WHILE:a       {:   RESULT=a;   :}
                 | SWHILE:a          {:   RESULT=a;   :}
                 | METODO:a          {:   RESULT=a;   :}
                 | STARTWITHH:a      {:   RESULT=a;   :}
-                | LLAMADA:a         {:   RESULT=a;   :}
+                | LLAMADA:a FINCADENA        {:   RESULT=a;   :}
                 | APPENDD:a         {:   RESULT=a;   :}
                 | REMOVEE:a         {:   RESULT=a;   :}
                 | error FINCADENA  
@@ -188,8 +192,8 @@ STARTWITHH ::= STARTWITH ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA  {:   RESULT = ne
             | STARTWITH ID:a PAR1 PAR2 FINCADENA  {:   RESULT = new StartWith(a, new LinkedList<Instruccion>(), aleft, aright);   :}
 ;
 
-LLAMADA ::= ID:a PAR1 PARAMSCALL:b PAR2 FINCADENA               {:  RESULT= new Llamada(a, b, aleft, aright);    :}
-          | ID:a PAR1 PAR2 FINCADENA                            {:  RESULT= new Llamada(a, new LinkedList<Instruccion>(), aleft, aright);    :}    
+LLAMADA ::= ID:a PAR1 PARAMSCALL:b PAR2              {:  RESULT= new Llamada(a, b, aleft, aright);    :}
+          | ID:a PAR1 PAR2                            {:  RESULT= new Llamada(a, new LinkedList<Instruccion>(), aleft, aright);    :}    
 ;
 
 PARAMSCALL ::= PARAMSCALL:a COMA EXPRESION:e    {:  RESULT = a;
@@ -213,6 +217,10 @@ BREAKK ::= BREAK:a FINCADENA      {:    RESULT = new Break(aleft, aright);     :
 ;
 
 CONTINUEE ::= CONTINUE:a FINCADENA  {:    RESULT = new Continue(aleft, aright);  :}
+;
+
+RETURNN ::= RETURN EXPRESION:a FINCADENA  {:    RESULT = new Return(a, aleft, aright);  :}
+            | RETURN:a FINCADENA  {:    RESULT = new Return(null, aleft, aright);  :}
 ;
 
 SWHILE ::= WHILE PAR1 EXPRESION:a PAR2 LLAVE1 INSTRUCCIONES:b LLAVE2     {:   RESULT = new While(a, b, aleft, aright);   :}
@@ -252,6 +260,7 @@ EXPRESION ::= MENOS EXPRESION:a                 {:  RESULT = new Aritmeticas(a, 
             | EXPRESION:a XOR EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.XOR, aleft, aright);  :}%prec XOR
             | EXPRESION:a AND EXPRESION:b       {:  RESULT = new Logicos(a, b, OperadoresLogicos.AND, aleft, aright);  :}%prec AND
             | EXPRESION:a OR EXPRESION:b        {:  RESULT = new Logicos(a, b, OperadoresLogicos.OR, aleft, aright);  :}%prec OR
+            | LLAMADA:a                         {:  RESULT = a;  :}
             | ENTERO:a      {:  RESULT = new Nativo(Integer.parseInt(a), new Tipo(tipoDato.ENTERO), aleft, aright);  :} 
             | DECIMAL:a     {:  RESULT = new Nativo(new Double(a), new Tipo(tipoDato.DECIMAL), aleft, aright);  :}
             | CADENA:a      {:  RESULT = new Nativo(a, new Tipo(tipoDato.CADENA), aleft, aright);  :}

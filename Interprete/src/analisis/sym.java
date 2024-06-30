@@ -13,26 +13,26 @@ public class sym {
   public static final int PAR1 = 13;
   public static final int CONST = 26;
   public static final int CHAR = 12;
-  public static final int REMOVE = 54;
+  public static final int REMOVE = 55;
   public static final int LLAVE2 = 37;
   public static final int EQUALS = 24;
   public static final int LLAVE1 = 36;
   public static final int IMPRIMIR = 8;
   public static final int ENTERO = 3;
-  public static final int XOR = 50;
+  public static final int XOR = 51;
   public static final int DIFERENTE = 25;
   public static final int DOUBLE = 10;
   public static final int CONTINUE = 47;
   public static final int INT = 9;
   public static final int FOR = 41;
-  public static final int NOT = 51;
-  public static final int AND = 49;
+  public static final int NOT = 52;
+  public static final int AND = 50;
   public static final int MENORIGUAL = 44;
   public static final int FINCADENA = 7;
-  public static final int APPEND = 52;
+  public static final int APPEND = 53;
   public static final int IGUAL = 23;
   public static final int CARACTER = 6;
-  public static final int OR = 48;
+  public static final int OR = 49;
   public static final int CORCHETE2 = 39;
   public static final int CORCHETE1 = 38;
   public static final int BOOL = 31;
@@ -42,7 +42,8 @@ public class sym {
   public static final int MAYORIGUAL = 45;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
-  public static final int STARTWITH = 56;
+  public static final int RETURN = 48;
+  public static final int STARTWITH = 57;
   public static final int TRUE = 28;
   public static final int NEW = 35;
   public static final int error = 1;
@@ -52,10 +53,10 @@ public class sym {
   public static final int MENOS = 16;
   public static final int MENOR = 42;
   public static final int BREAK = 46;
-  public static final int VOID = 55;
+  public static final int VOID = 56;
   public static final int MAYOR = 43;
   public static final int POTENCIA = 20;
-  public static final int PUNTO = 53;
+  public static final int PUNTO = 54;
   public static final int WHILE = 32;
   public static final int LIST = 34;
   public static final int STRING = 11;
@@ -114,6 +115,7 @@ public class sym {
   "MAYORIGUAL",
   "BREAK",
   "CONTINUE",
+  "RETURN",
   "OR",
   "AND",
   "XOR",

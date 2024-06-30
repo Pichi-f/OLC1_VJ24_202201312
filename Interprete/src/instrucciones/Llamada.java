@@ -35,6 +35,7 @@ public class Llamada extends Instruccion {
         }
 
         if (busqueda instanceof Metodo metodo) {
+            this.tipo.setTipo(metodo.tipo.getTipo());
             var newTabla = new tablaSimbolos(arbol.getTablaGlobal());
             newTabla.setNombre("LLAMADA METODO " + this.id);
             if (metodo.parametros.size() != this.parametros.size()) {
@@ -79,6 +80,9 @@ public class Llamada extends Instruccion {
 
             var resultadoFuncion = metodo.interpretar(arbol, newTabla);
             if (resultadoFuncion instanceof Errores) {
+                return resultadoFuncion;
+            }
+            if (resultadoFuncion != null){
                 return resultadoFuncion;
             }
 

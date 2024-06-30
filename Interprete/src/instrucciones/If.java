@@ -49,6 +49,12 @@ public class If extends Instruccion {
                 if (resultado instanceof Errores) {
                     return resultado;
                 }
+                if (resultado != null) {
+                    if (resultado.equals("[label_=_'_RETURN_']")){
+                        return resultado;
+                    }
+                return resultado;
+                }
             }
         }
         return null;

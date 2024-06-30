@@ -33,6 +33,13 @@ public class Metodo extends Instruccion {
             var resultado = i.interpretar(arbol, tabla);
             //resultado instancia de errores
             // return;
+            System.out.println(resultado);
+            if (resultado != null) {
+                if (resultado.equals("[label_=_'_RETURN_']")){
+                    return null;
+                }
+                return resultado;
+            }
         }
         return null;
     }
