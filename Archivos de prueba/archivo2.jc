@@ -1,0 +1,103 @@
+//declaramos las variables globales
+var vector: int[] = [100, 23, 54, 87, 64, 34, 78, 36, 14, 1];
+
+void recursiva2(int valor){
+    println("========= Recursiva 2 =========");
+    println("Resultado de fibonacci del valor " + valor + " es " + fibonacci(20));
+}
+
+int fibonacci(int n){
+    if (n > 1) {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    } if (n == 1) {
+        return 1;
+    } if (n == 0) {
+        return 0;
+    }
+        println("Error en fibonacci");
+        return 0;
+    
+}
+
+int recursiva3(int m, int n){
+    if ((m == 1) || (n == 1)) {
+        println("Contar Caminos (" + m + ", " + n + ") = 1");
+        return 1;
+    }
+    var resultado: int = recursiva3(m - 1, n) + recursiva3(m, n - 1);
+    println("Contar Caminos (" + m + ", " + n + ") = Contar Caminos(" + (m - 1) + ", " + n + ") + Contar Caminos(" + m + ", " + (n - 1) + ") = " + resultado);
+    return resultado;
+
+}
+
+void main(){
+    println("-----------------CALIFICACION ARCHIVO 2-----------------");
+    println("");
+    recursivas();
+    println("");
+    vector1();
+    println("");
+
+}
+
+void recursivas(){
+    recursiva2(20);
+    println("");
+    println("========= Recursiva 3 =========");
+    var m: int = 3;
+    var n: int = 3;
+    println("La cantidad de caminos en una cuadricula de " + m + "x" + n + " es: " + recursiva3(m, n));
+    println("");
+}
+
+void swap(int i, int j){
+    const temp: int = vector[i];
+    vector[i] = vector[j];
+    vector[j] = temp;
+    return;
+}
+
+int particion(int menor, int mayor){
+    var pivote: int = vector[mayor];
+    var i: int = menor - 1;
+    var j: int = menor;
+    for (j = menor; j <= mayor; j = j + 1) {
+        if (vector[j] < pivote) {
+            i = i + 1;
+            swap(i, j);
+        }
+    }
+    swap(i + 1, mayor);
+    return (i + 1);
+}
+
+void quickSort(int menor, int mayor){
+    if (menor < mayor) {
+        var pi: int = particion(menor, mayor);
+        quickSort(menor, pi - 1);
+        quickSort(pi + 1, mayor);
+    }
+}
+
+void imprimirVector(){
+    var i: int = 0;
+    var cadena: string = "[";
+    for (i = 0; i < 10; i  = i + 1) {
+        cadena = cadena + " " + vector[i];
+    }
+    cadena = cadena + " ]";
+    println(cadena);
+}
+
+void vector1(){
+    println("========= Vector desordenado =========");
+    imprimirVector();
+    println("");
+    println("========= Vector ordenado =========");
+    var n: int = 10;
+    quickSort(0, n - 1);
+    imprimirVector();
+}
+
+
+START_WITH main();
